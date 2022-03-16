@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SafeBackHome</string>
+    <color name="red_alert_color">#D0342C</color>
+    <style name="button_red_alert" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">@color/red_alert_color</item>
+    </style>
 </resources>
