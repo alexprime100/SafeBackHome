@@ -12,7 +12,7 @@ class SettingsActivity : AppCompatActivity() {
         editPassword= findViewById(R.id.editTextTextPassword)
         editPin= findViewById(R.id.editTextNumberPassword)
         alertMessage= findViewById(R.id.editAlertMessage)
-        alertMessage.setText("cc")
+        //alertMessage.setText("cc")
     }
     private lateinit var alertMessage: EditText
     private lateinit var editPassword: EditText
