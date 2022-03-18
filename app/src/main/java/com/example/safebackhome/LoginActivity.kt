@@ -6,67 +6,55 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class RegisterActivity : AppCompatActivity() {
-
+class LoginActivity : AppCompatActivity() {
     private lateinit var emailEdit : EditText
     private lateinit var passwordEdit : EditText
-    private lateinit var confirmPasswordEdit : EditText
     private lateinit var submit : Button
-    var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-    private lateinit var progressBar : ProgressBar
     private lateinit var authentication : FirebaseAuth
     private lateinit var user : FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        setContentView(R.layout.activity_login)
 
-        emailEdit = findViewById(R.id.register_email_edit)
-        passwordEdit = findViewById(R.id.register_editpassword)
-        confirmPasswordEdit = findViewById(R.id.register_editconfirmpassword)
-        submit = findViewById(R.id.register_submit_button)
-        progressBar = ProgressBar(applicationContext)
+        emailEdit = findViewById(R.id.login_email_edit)
+        passwordEdit = findViewById(R.id.login_editpassword)
+        submit = findViewById(R.id.login_submit_button)
         authentication = FirebaseAuth.getInstance()
         //user = authentication.currentUser!!
 
-        submit.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?){
-                authenticate()
+        submit.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(view: View) {
+                login()
             }
         })
     }
 
-    fun authenticate(){
+    private fun login() {
         var email = emailEdit.text.toString()
         var pass1 = passwordEdit.text.toString()
-        var pass2 = confirmPasswordEdit.text.toString()
 
-        if (!email.matches(Regex(emailPattern))){
-            emailEdit.setError("Enter correct email")
+        if (email.isEmpty()){
+            emailEdit.setError("Enter a correct email")
         }
-        else if (pass1.isEmpty() || pass1.length < 5){
-            passwordEdit.setError("Enter correct password")
-        }
-        else if (!pass1.equals(pass2)){
-            confirmPasswordEdit.setError("both passwords must be identical")
-        }
-        else{
-            authentication.createUserWithEmailAndPassword(email, pass1).addOnCompleteListener(this){task ->
+        else if (pass1.isEmpty())
+            passwordEdit.setError("enter a correct password")
+        else
+        {
+            authentication.signInWithEmailAndPassword(email, pass1).addOnCompleteListener(this){task ->
                 if (task.isSuccessful){
                     sendUserToNextActivity()
-                    Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "login successful", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
         }
-
     }
 
     private fun sendUserToNextActivity() {

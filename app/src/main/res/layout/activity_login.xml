@@ -7,19 +7,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".RegisterActivity">
+    tools:context=".LoginActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email"
         android:layout_marginBottom="15dp"
-        android:id="@+id/register_email_textview" />
+        android:id="@+id/login_email_textview" />
 
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:id="@+id/register_email_edit"
+        android:id="@+id/login_email_edit"
         android:layout_marginBottom="25dp"
         android:hint="email" />
 
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password"
-        android:id="@+id/register_password_textview"
+        android:id="@+id/login_password_textview"
         android:layout_marginBottom="15dp" />
 
     <EditText
@@ -35,28 +35,13 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:hint="password"
-        android:id="@+id/register_editpassword"
-        android:layout_marginBottom="25dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirm Password"
-        android:id="@+id/register_confirmpassword_textview"
-        android:layout_marginBottom="15dp" />
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="password"
-        android:id="@+id/register_editconfirmpassword"
+        android:id="@+id/login_editpassword"
         android:layout_marginBottom="25dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="submit"
-        android:id="@+id/register_submit_button" />
+        android:id="@+id/login_submit_button" />
 
 </LinearLayout>

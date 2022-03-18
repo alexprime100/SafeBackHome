@@ -57,6 +57,12 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="login"
+            android:id="@+id/login_button" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="register"
             android:id="@+id/register_button" />
     </LinearLayout>
