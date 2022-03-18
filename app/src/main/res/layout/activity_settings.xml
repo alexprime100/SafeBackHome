@@ -47,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingTop="20dp"
+        android:hint="message d'alerte"
         tools:layout_editor_absoluteX="100dp"
         tools:layout_editor_absoluteY="188dp" />
     <TextView
