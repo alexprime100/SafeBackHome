@@ -53,6 +53,36 @@
         android:id="@+id/register_editconfirmpassword"
         android:layout_marginBottom="25dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First name"
+        android:id="@+id/register_firstname_textview"
+        android:layout_marginBottom="15dp" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="First name"
+        android:id="@+id/register_editfirstname"
+        android:layout_marginBottom="25dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last name"
+        android:id="@+id/register_lastname_textview"
+        android:layout_marginBottom="15dp" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Last name"
+        android:id="@+id/register_editlastname"
+        android:layout_marginBottom="25dp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -10,17 +10,26 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.*
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
+import kotlin.collections.HashMap
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var emailEdit : EditText
     private lateinit var passwordEdit : EditText
     private lateinit var confirmPasswordEdit : EditText
+    private lateinit var firstNameEdit : EditText
+    private lateinit var lastNameEdit : EditText
     private lateinit var submit : Button
-    var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+    private var emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
     private lateinit var progressBar : ProgressBar
-    private lateinit var authentication : FirebaseAuth
-    private lateinit var user : FirebaseUser
+    private lateinit var fireAuthentication : FirebaseAuth
+    private lateinit var fireUser : FirebaseUser
+    private lateinit var fireStore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +38,14 @@ class RegisterActivity : AppCompatActivity() {
         emailEdit = findViewById(R.id.register_email_edit)
         passwordEdit = findViewById(R.id.register_editpassword)
         confirmPasswordEdit = findViewById(R.id.register_editconfirmpassword)
+        firstNameEdit = findViewById(R.id.register_editfirstname)
+        lastNameEdit = findViewById(R.id.register_editlastname)
+
         submit = findViewById(R.id.register_submit_button)
+
         progressBar = ProgressBar(applicationContext)
-        authentication = FirebaseAuth.getInstance()
+        fireAuthentication = FirebaseAuth.getInstance()
+        fireStore = FirebaseFirestore.getInstance()
         //user = authentication.currentUser!!
 
         submit.setOnClickListener(object : View.OnClickListener {
@@ -45,6 +59,8 @@ class RegisterActivity : AppCompatActivity() {
         var email = emailEdit.text.toString()
         var pass1 = passwordEdit.text.toString()
         var pass2 = confirmPasswordEdit.text.toString()
+        var firstname = firstNameEdit.text.toString()
+        var lastname = firstNameEdit.text.toString()
 
         if (!email.matches(Regex(emailPattern))){
             emailEdit.setError("Enter correct email")
@@ -56,10 +72,19 @@ class RegisterActivity : AppCompatActivity() {
             confirmPasswordEdit.setError("both passwords must be identical")
         }
         else{
-            authentication.createUserWithEmailAndPassword(email, pass1).addOnCompleteListener(this){task ->
+            fireAuthentication.createUserWithEmailAndPassword(email, pass1).addOnCompleteListener(this){task ->
                 if (task.isSuccessful){
+                    fireUser = fireAuthentication.currentUser!!
+                    var df = fireStore.collection("Users").document(fireUser.uid)
+                    var userInfo : HashMap<String, Any> = HashMap<String, Any>()
+                    userInfo.put("FitstName", firstname)
+                    userInfo.put("LastName", lastname)
+                    userInfo.put("Email", email)
+                    userInfo.put("Password", pass1)
+                    df.set(userInfo)
                     sendUserToNextActivity()
                     Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
                 else{
                     Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()

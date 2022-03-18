@@ -14,6 +14,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var emailEdit : EditText
     private lateinit var passwordEdit : EditText
     private lateinit var submit : Button
+    private lateinit var register : Button
     private lateinit var authentication : FirebaseAuth
     private lateinit var user : FirebaseUser
 
@@ -24,12 +25,19 @@ class LoginActivity : AppCompatActivity() {
         emailEdit = findViewById(R.id.login_email_edit)
         passwordEdit = findViewById(R.id.login_editpassword)
         submit = findViewById(R.id.login_submit_button)
+        register = findViewById(R.id.login_register_button)
         authentication = FirebaseAuth.getInstance()
         //user = authentication.currentUser!!
 
         submit.setOnClickListener(object : View.OnClickListener{
             override fun onClick(view: View) {
                 login()
+            }
+        })
+
+        register.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(view: View) {
+                startActivity(Intent(applicationContext, RegisterActivity::class.java))
             }
         })
     }
