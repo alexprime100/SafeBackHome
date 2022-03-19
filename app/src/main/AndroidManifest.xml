@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeBackHome">
         <activity
-            android:name=".LoginActivity"
+            android:name=".activites.LoginActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,13 +19,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".activites.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activites.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activites.MainActivity"
             android:exported="false">
         </activity>
     </application>

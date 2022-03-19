@@ -7,86 +7,129 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".RegisterActivity">
+    tools:context=".activites.RegisterActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email"
-        android:layout_marginBottom="15dp"
-        android:id="@+id/register_email_textview" />
+    <ScrollView
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/register_email_edit"
-        android:layout_marginBottom="25dp"
-        android:hint="email" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password"
-        android:id="@+id/register_password_textview"
-        android:layout_marginBottom="15dp" />
+        <LinearLayout
+            android:padding="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="left">
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="password"
-        android:id="@+id/register_editpassword"
-        android:layout_marginBottom="25dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Adresse Email"
+                android:layout_marginBottom="15dp"
+                android:id="@+id/register_email_textview" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirm Password"
-        android:id="@+id/register_confirmpassword_textview"
-        android:layout_marginBottom="15dp" />
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/register_email_edit"
+                android:layout_marginBottom="25dp"
+                android:hint="email" />
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="password"
-        android:id="@+id/register_editconfirmpassword"
-        android:layout_marginBottom="25dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mot de passe"
+                android:id="@+id/register_password_textview"
+                android:layout_marginBottom="15dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="First name"
-        android:id="@+id/register_firstname_textview"
-        android:layout_marginBottom="15dp" />
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Mot de passe"
+                android:id="@+id/register_editpassword"
+                android:layout_marginBottom="25dp" />
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="First name"
-        android:id="@+id/register_editfirstname"
-        android:layout_marginBottom="25dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmer le mot de passe"
+                android:id="@+id/register_confirmpassword_textview"
+                android:layout_marginBottom="15dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last name"
-        android:id="@+id/register_lastname_textview"
-        android:layout_marginBottom="15dp" />
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Mot de passe"
+                android:id="@+id/register_editconfirmpassword"
+                android:layout_marginBottom="25dp" />
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="Last name"
-        android:id="@+id/register_editlastname"
-        android:layout_marginBottom="25dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prénom"
+                android:id="@+id/register_firstname_textview"
+                android:layout_marginBottom="15dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="submit"
-        android:id="@+id/register_submit_button" />
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="Prénom"
+                android:id="@+id/register_editfirstname"
+                android:layout_marginBottom="25dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nom de famille"
+                android:id="@+id/register_lastname_textview"
+                android:layout_marginBottom="15dp" />
+
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="nom"
+                android:id="@+id/register_editlastname"
+                android:layout_marginBottom="25dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Code PIN à 4 chiffres"
+                android:id="@+id/register_pin_textview"
+                android:layout_marginBottom="15dp" />
+
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberPassword"
+                android:id="@+id/register_editPin"
+                android:layout_marginBottom="25dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Faux code PIN à 4 chiffres"
+                android:id="@+id/register_fakepin_textview"
+                android:layout_marginBottom="15dp" />
+
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberPassword"
+                android:id="@+id/register_editFakePin"
+                android:layout_marginBottom="25dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S'inscrire"
+                android:id="@+id/register_submit_button" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

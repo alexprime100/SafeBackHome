@@ -1,4 +1,4 @@
-package com.example.safebackhome
+package com.example.safebackhome.activites
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,15 +7,18 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.safebackhome.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEdit : EditText
     private lateinit var passwordEdit : EditText
     private lateinit var submit : Button
     private lateinit var register : Button
-    private lateinit var authentication : FirebaseAuth
+    private lateinit var fireAuthentication : FirebaseAuth
+    private lateinit var firestore : FirebaseFirestore
     private lateinit var user : FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +29,8 @@ class LoginActivity : AppCompatActivity() {
         passwordEdit = findViewById(R.id.login_editpassword)
         submit = findViewById(R.id.login_submit_button)
         register = findViewById(R.id.login_register_button)
-        authentication = FirebaseAuth.getInstance()
+        fireAuthentication = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
         //user = authentication.currentUser!!
 
         submit.setOnClickListener(object : View.OnClickListener{
@@ -42,6 +46,14 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (FirebaseAuth.getInstance().currentUser != null){
+            startActivity(Intent(applicationContext, MainActivity::class.java))
+            finish()
+        }
+    }
+
     private fun login() {
         var email = emailEdit.text.toString()
         var pass1 = passwordEdit.text.toString()
@@ -53,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
             passwordEdit.setError("enter a correct password")
         else
         {
-            authentication.signInWithEmailAndPassword(email, pass1).addOnCompleteListener(this){task ->
+            fireAuthentication.signInWithEmailAndPassword(email, pass1).addOnCompleteListener(this){task ->
                 if (task.isSuccessful){
                     sendUserToNextActivity()
                     Toast.makeText(this, "login successful", Toast.LENGTH_SHORT).show()

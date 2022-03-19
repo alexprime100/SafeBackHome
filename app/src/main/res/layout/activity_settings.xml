@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
+    tools:context=".activites.SettingsActivity"
     android:orientation="vertical">
 
     <TextView
@@ -50,6 +50,7 @@
         android:hint="message d'alerte"
         tools:layout_editor_absoluteX="100dp"
         tools:layout_editor_absoluteY="188dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,6 +59,7 @@
         android:text="Favoris"
         tools:layout_editor_absoluteX="162dp"
         tools:layout_editor_absoluteY="313dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,4 +68,12 @@
         android:text="Contacts"
         tools:layout_editor_absoluteX="162dp"
         tools:layout_editor_absoluteY="313dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Se déconnecter"
+        android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:id="@+id/logout_button"/>
 </LinearLayout>
