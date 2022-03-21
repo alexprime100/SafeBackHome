@@ -1,6 +1,7 @@
 package com.example.safebackhome.activites
 
 import android.Manifest.permission
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -31,13 +32,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var alertButton: Button
     private lateinit var contactsRecyclerView : RecyclerView
     private val MY_PERMISSIONS_REQUEST_SEND_SMS = 0
+    private val MY_PERMISSIONS_REQUEST_PHONE_CALL = 1
     private lateinit var callPoliceButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        requestSmsPermission()
+        requestPermissions()
         declareViews()
 
         //Listerers
@@ -87,16 +89,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun requestSmsPermission(){
+    private fun requestPermissions(){
         try {
             if (ContextCompat.checkSelfPermission(this, permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.SEND_SMS)) { }
                 else
                     ActivityCompat.requestPermissions(this, arrayOf(permission.SEND_SMS), MY_PERMISSIONS_REQUEST_SEND_SMS)
             }
+            if (ContextCompat.checkSelfPermission(this, permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.CALL_PHONE)) { }
+                else
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.CALL_PHONE), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+            }
         }
         catch (e :Exception){
-            Log.e("SMS ERROR", e.message.toString())
+            Log.e("PERMISSION ERROR : ", e.message.toString(), e)
         }
     }
 
@@ -160,9 +167,17 @@ class MainActivity : AppCompatActivity() {
             Log.e("SMS ERROR", e.message.toString())
         }
     }
-    public fun callPolice(){
-        var callIntent = Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:+33780037131"));
-        startActivity(callIntent);
+
+    private fun callPolice(){
+        try{
+            val callIntent : Intent = Uri.parse("tel:+33780037131").let { number ->
+                Intent(Intent.ACTION_CALL, number)
+            }
+            val chooser = Intent.createChooser(callIntent, "Sélectionnez une application")
+            startActivity(callIntent);
+        }
+        catch (e : ActivityNotFoundException){
+            Log.e("Call Error: ", e.message.toString(), e)
+        }
     }
 }
