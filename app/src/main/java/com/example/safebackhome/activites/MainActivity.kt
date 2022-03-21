@@ -4,6 +4,7 @@ import android.Manifest.permission
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.util.Log
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var alertButton: Button
     private lateinit var contactsRecyclerView : RecyclerView
     private val MY_PERMISSIONS_REQUEST_SEND_SMS = 0
+    private lateinit var callPoliceButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +46,17 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(applicationContext, SettingsActivity::class.java))
             }
         })
-
         alertButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
                 sendSMS("test", "+33649550343")
             }
         })
+        callPoliceButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View?) {
+                callPolice()
+            }
+        })
+
 
     }
 
@@ -57,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         welcomeMessage = findViewById(R.id.name_textview)
         settings = findViewById(R.id.settings_button)
         alertButton = findViewById(R.id.alert_button)
+        callPoliceButton = findViewById(R.id.call_police_button)
     }
 
     override fun onStart() {
@@ -151,5 +159,10 @@ class MainActivity : AppCompatActivity() {
         catch (e : Exception){
             Log.e("SMS ERROR", e.message.toString())
         }
+    }
+    public fun callPolice(){
+        var callIntent = Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:+33780037131"));
+        startActivity(callIntent);
     }
 }
