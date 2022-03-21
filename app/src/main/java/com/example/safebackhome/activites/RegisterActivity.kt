@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.example.safebackhome.R
+import com.example.safebackhome.models.Contact
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -89,6 +90,10 @@ class RegisterActivity : AppCompatActivity() {
                 if (task.isSuccessful){
                     fireUser = fireAuthentication.currentUser!!
                     var df = fireStore.collection("Users").document(fireUser.uid)
+                    var contacts = ArrayList<Contact>()
+                    contacts.add(Contact("papa", "123"))
+                    contacts.add(Contact("maman", "321"))
+
                     var userInfo : HashMap<String, Any> = HashMap<String, Any>()
                     userInfo.put("FirstName", firstname)
                     userInfo.put("LastName", lastname)
@@ -96,6 +101,15 @@ class RegisterActivity : AppCompatActivity() {
                     userInfo.put("PIN", pin)
                     userInfo.put("FakePin", fakePin)
                     df.set(userInfo)
+
+                    contacts.forEach{
+                        var df2 = fireStore.collection("Contacts").document()
+                        var contactInfo : HashMap<String, Any> = HashMap<String, Any>()
+                        contactInfo.put("UserId", fireUser.uid)
+                        contactInfo.put("ContactFullName", it.fullName)
+                        contactInfo.put("ContactNumber", it.phoneNumber)
+                        df2.set(contactInfo)
+                    }
                     sendUserToNextActivity()
                     Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
                     finish()
