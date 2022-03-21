@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,10 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeBackHome">
-
+        <activity
+            android:name=".activites.AddContactActivity"
+            android:exported="false" />
         <activity
             android:name=".activites.LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +34,7 @@
             android:exported="false" />
         <activity
             android:name=".activites.MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
     </application>
+
 </manifest>

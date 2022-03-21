@@ -6,8 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".activites.SettingsActivity"
     android:orientation="vertical">
+    <ScrollView
 
-    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+        <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,15 +59,22 @@
         android:hint="message d'alerte"
         tools:layout_editor_absoluteX="100dp"
         tools:layout_editor_absoluteY="188dp" />
-
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Enregistrer"
+        android:id="@+id/settings_save_button"
         android:layout_gravity="center"
-        android:paddingTop="10dp"
-        android:text="Favoris"
-        tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="313dp" />
+        android:paddingTop="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="10dp"
+                android:text="(Favoris)"
+                tools:layout_editor_absoluteX="162dp"
+                tools:layout_editor_absoluteY="313dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -69,22 +85,37 @@
         tools:layout_editor_absoluteX="162dp"
         tools:layout_editor_absoluteY="313dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingTop="15dp"
-        android:id="@+id/settings_contactsList"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/settings_contactsList"
+                android:layout_width="332dp"
+                android:layout_height="248dp"
+                android:layout_gravity="center"
+                android:paddingTop="15dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Se déconnecter"
-        android:layout_gravity="center"
-        android:paddingTop="10dp"
-        android:id="@+id/logout_button"/>
+            <Button
+                android:id="@+id/settings_addContact_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="15dp"
+                android:text="Ajouter un contact" />
+
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            android:layout_alignParentBottom="true"
+
+            <Button
+            android:id="@+id/logout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="10dp"
+            android:text="Se déconnecter"
+            />
+    </RelativeLayout>
+    </ScrollView>
 </LinearLayout>
