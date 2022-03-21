@@ -106,6 +106,7 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("ContactNumber") != null)
                             {
                                 contacts.add(Contact(
+                                    document.getString("UserId").toString(),
                                     document.getString("ContactFullName").toString(),
                                     document.getString("ContactNumber").toString()))
                             }
@@ -122,9 +123,12 @@ class MainActivity : AppCompatActivity() {
                     {
 
                         loggedUser = User(
+                            document.getString("Id").toString(),
                             document.getString("Email").toString(),
                             document.getString("FirstName").toString(),
                             document.getString("LastName").toString(),
+                            document.getString("Pin").toString(),
+                            document.getString("fakePin").toString(),
                             contacts)
                         Log.d("User Debug", "nb contacts" + loggedUser.contacts.size)
                         welcomeMessage.text = "Bonjour " + loggedUser.firstName

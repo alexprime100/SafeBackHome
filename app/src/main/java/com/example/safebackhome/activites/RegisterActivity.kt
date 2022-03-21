@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import com.example.safebackhome.R
 import com.example.safebackhome.models.Contact
+import com.example.safebackhome.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -91,24 +92,16 @@ class RegisterActivity : AppCompatActivity() {
                     fireUser = fireAuthentication.currentUser!!
                     var df = fireStore.collection("Users").document(fireUser.uid)
                     var contacts = ArrayList<Contact>()
-                    contacts.add(Contact("papa", "123"))
-                    contacts.add(Contact("maman", "321"))
+                    contacts.add(Contact(fireUser.uid,"papa", "123"))
+                    contacts.add(Contact(fireUser.uid,"maman", "321"))
 
-                    var userInfo : HashMap<String, Any> = HashMap<String, Any>()
-                    userInfo.put("FirstName", firstname)
-                    userInfo.put("LastName", lastname)
-                    userInfo.put("Email", email)
-                    userInfo.put("PIN", pin)
-                    userInfo.put("FakePin", fakePin)
-                    df.set(userInfo)
+                    var user = User(fireUser.uid, email, firstname, lastname, pin, fakePin, contacts)
+                    df.set(user.toHashMap())
 
                     contacts.forEach{
                         var df2 = fireStore.collection("Contacts").document()
-                        var contactInfo : HashMap<String, Any> = HashMap<String, Any>()
-                        contactInfo.put("UserId", fireUser.uid)
-                        contactInfo.put("ContactFullName", it.fullName)
-                        contactInfo.put("ContactNumber", it.phoneNumber)
-                        df2.set(contactInfo)
+
+                        df2.set(it.toHashMap())
                     }
                     sendUserToNextActivity()
                     Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
