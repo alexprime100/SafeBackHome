@@ -24,7 +24,6 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var editPassword: EditText
     private lateinit var editPin: EditText
     private lateinit var logout : Button
-    private lateinit var addContact: Button
     private lateinit var contactsRecyclerView : RecyclerView
     private lateinit var fireAuthentication : FirebaseAuth
     private lateinit var firestore : FirebaseFirestore
@@ -42,11 +41,10 @@ class SettingsActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         //alertMessage.setText("cc")
 
-        addContact.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View?) {
-                startActivity(Intent(applicationContext, AddContactActivity::class.java))
-            }
-        })
+        contactList = ArrayList<Contact>()
+        contactList.add(Contact("papa", "123"))
+        contactList.add(Contact("maman", "321"))
+
 
         logout.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
@@ -54,8 +52,6 @@ class SettingsActivity : AppCompatActivity() {
                 sendUserToNextActivity()
             }
         })
-
-
     }
 
     override fun onStart() {
@@ -69,10 +65,10 @@ class SettingsActivity : AppCompatActivity() {
         alertMessage= findViewById(R.id.editAlertMessage)
         logout = findViewById(R.id.logout_button)
         contactsRecyclerView = findViewById(R.id.settings_contactsList)
-        addContact = findViewById(R.id.settings_addContact_button)
     }
 
     private fun initiateRecyclerView(){
+        contactAdapter = ContactAdapter(Data.user.contacts)
         contactsRecyclerView.adapter = contactAdapter
     }
 
