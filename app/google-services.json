@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "959812139455",
+    "project_id": "safebackhome-32335",
+    "storage_bucket": "safebackhome-32335.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959812139455:android:7c18356abc0cec7f43490a",
+        "android_client_info": {
+          "package_name": "com.example.safebackhome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "959812139455-h6tf72f0cl8g2okhgdopuf3ru9glj3bu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL_W33qO53c08J__rqTWiBNGL6QSatqk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "959812139455-h6tf72f0cl8g2okhgdopuf3ru9glj3bu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
