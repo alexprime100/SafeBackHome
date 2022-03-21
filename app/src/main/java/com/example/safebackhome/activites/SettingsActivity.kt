@@ -16,6 +16,7 @@ import com.example.safebackhome.models.User
 import com.example.safebackhome.viewHolders.ContactViewHolder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.lang.Exception
 import kotlin.math.log
 
 class SettingsActivity : AppCompatActivity() {
@@ -23,6 +24,8 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var alertMessage: EditText
     private lateinit var editPassword: EditText
     private lateinit var editPin: EditText
+    private lateinit var saveButton : Button
+    private lateinit var addContact: Button
     private lateinit var logout : Button
     private lateinit var contactsRecyclerView : RecyclerView
     private lateinit var fireAuthentication : FirebaseAuth
@@ -42,9 +45,29 @@ class SettingsActivity : AppCompatActivity() {
         //alertMessage.setText("cc")
 
         contactList = ArrayList<Contact>()
-        contactList.add(Contact("papa", "123"))
-        contactList.add(Contact("maman", "321"))
 
+        saveButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View?) {
+                val newPin = editPin.text.toString()
+                if (!newPin.isEmpty()){
+                    try {
+                        val userDocRef = firestore.collection("Users").document(Data.user.id)
+                        userDocRef.update("PIN", newPin)
+                            .addOnSuccessListener { Log.d("Update User Debug: ", "upadte successful") }
+                            .addOnFailureListener { e -> Log.e("Update User Error: ", e.message.toString(), e) }
+                    }
+                    catch (e :Exception){
+                        Log.e("Update User Error: ", e.message.toString(), e)
+                    }
+                }
+            }
+        })
+
+        addContact.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View?) {
+                startActivity(Intent(applicationContext, AddContactActivity::class.java))
+            }
+        })
 
         logout.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
@@ -60,11 +83,13 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun declareViews(){
-        editPassword= findViewById(R.id.editTextTextPassword)
-        editPin= findViewById(R.id.editTextNumberPassword)
-        alertMessage= findViewById(R.id.editAlertMessage)
+        editPassword = findViewById(R.id.editTextTextPassword)
+        editPin = findViewById(R.id.editTextNumberPassword)
+        alertMessage = findViewById(R.id.editAlertMessage)
+        saveButton = findViewById(R.id.settings_save_button)
         logout = findViewById(R.id.logout_button)
         contactsRecyclerView = findViewById(R.id.settings_contactsList)
+        addContact = findViewById(R.id.settings_addContact_button)
     }
 
     private fun initiateRecyclerView(){

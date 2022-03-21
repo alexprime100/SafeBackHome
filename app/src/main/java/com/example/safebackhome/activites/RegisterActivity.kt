@@ -91,8 +91,8 @@ class RegisterActivity : AppCompatActivity() {
                     fireUser = fireAuthentication.currentUser!!
                     var df = fireStore.collection("Users").document(fireUser.uid)
                     var contacts = ArrayList<Contact>()
-                    contacts.add(Contact("papa", "123"))
-                    contacts.add(Contact("maman", "321"))
+                    contacts.add(Contact(fireUser.uid, "papa", "123"))
+                    contacts.add(Contact(fireUser.uid, "maman", "321"))
 
                     var userInfo : HashMap<String, Any> = HashMap<String, Any>()
                     userInfo.put("FirstName", firstname)
