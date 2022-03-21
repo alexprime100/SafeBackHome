@@ -83,6 +83,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/settings_addContact_button"
+        android:layout_gravity="center"
+        android:paddingTop="15dp"
+        android:text="Ajouter un contact" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Se déconnecter"
         android:layout_gravity="center"
         android:paddingTop="10dp"
