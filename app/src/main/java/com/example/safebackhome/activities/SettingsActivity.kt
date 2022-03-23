@@ -1,4 +1,4 @@
-package com.example.safebackhome.activites
+package com.example.safebackhome.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -13,11 +13,9 @@ import com.example.safebackhome.R
 import com.example.safebackhome.adapters.ContactAdapter
 import com.example.safebackhome.models.Contact
 import com.example.safebackhome.models.User
-import com.example.safebackhome.viewHolders.ContactViewHolder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.lang.Exception
-import kotlin.math.log
 
 class SettingsActivity : AppCompatActivity() {
 

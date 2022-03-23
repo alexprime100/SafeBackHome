@@ -1,4 +1,4 @@
-package com.example.safebackhome.activites
+package com.example.safebackhome.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

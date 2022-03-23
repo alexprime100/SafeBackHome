@@ -1,8 +1,7 @@
-package com.example.safebackhome.activites
+package com.example.safebackhome.activities
 
 import android.Manifest.permission
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         requestPermissions()
         declareViews()
 
-        //Listerers
+        //Listeners
         settings.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
                 startActivity(Intent(applicationContext, SettingsActivity::class.java))
