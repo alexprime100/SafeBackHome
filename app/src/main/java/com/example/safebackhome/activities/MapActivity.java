@@ -2,6 +2,7 @@ package com.example.safebackhome.activities;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,16 +23,20 @@ public class MapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Configuration.getInstance().load(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         setContentView(R.layout.activity_map);
-        map = findViewById(R.id.map);
-        map.setTileSource(TileSourceFactory.MAPNIK);
-        map.setBuiltInZoomControls(true); //zoomable
-        GeoPoint starPoint = new GeoPoint( 48.390394, -4.486076);
-        mapController = map.getController();
-        mapController.setCenter(starPoint);
-        mapController.setZoom(18.0);
-
+        try {
+            Configuration.getInstance().load(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
+            map = findViewById(R.id.map);
+            map.setTileSource(TileSourceFactory.MAPNIK);
+            map.setBuiltInZoomControls(true); //zoomable
+            GeoPoint starPoint = new GeoPoint(48.390394, -4.486076);
+            mapController = map.getController();
+            mapController.setCenter(starPoint);
+            mapController.setZoom(18.0);
+        }
+        catch (Exception e){
+            Log.e("Map Error", e.getMessage().toString());
+        }
 
     }
 
