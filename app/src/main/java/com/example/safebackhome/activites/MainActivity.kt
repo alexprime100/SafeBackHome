@@ -86,6 +86,12 @@ class MainActivity : AppCompatActivity() {
                 else
                     Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show()
             }
+            MY_PERMISSIONS_REQUEST_PHONE_CALL -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "thanks for permitting", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
