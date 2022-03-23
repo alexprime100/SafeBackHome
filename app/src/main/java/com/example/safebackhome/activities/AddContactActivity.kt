@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import com.example.safebackhome.Data
 import com.example.safebackhome.R
@@ -20,6 +21,7 @@ class AddContactActivity : AppCompatActivity() {
     private lateinit var editPhone : EditText
     private lateinit var addButton : Button
     private lateinit var fireStore: FirebaseFirestore
+    private lateinit var isFavorite : CheckBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,7 @@ class AddContactActivity : AppCompatActivity() {
                 else {
                     try {
                         var df = fireStore.collection("Contacts").document()
-                        var newContact = Contact(df.id, Data.user.id, name, phone)
+                        var newContact = Contact(df.id, Data.user.id, name, phone, isFavorite.isChecked)
                         df.set(newContact.toHashMap())
                         Data.user.contacts.add(newContact)
                     }
@@ -63,5 +65,6 @@ class AddContactActivity : AppCompatActivity() {
         editName = findViewById(R.id.addContact_name_editText)
         editPhone = findViewById(R.id.addContact_phonenumber_editText)
         addButton = findViewById(R.id.addContact_add_button)
+        isFavorite = findViewById(R.id.addContact_isFavorite_checkbox)
     }
 }

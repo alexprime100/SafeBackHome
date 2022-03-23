@@ -94,11 +94,27 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initiateRecyclerView(){
-        contactAdapter = ContactAdapter(Data.user.contacts)
+        contactAdapter = ContactAdapter(getNonfavorites())
         contactsRecyclerView.adapter = contactAdapter
     }
 
+    private fun getFavorites() : ArrayList<Contact>{
+        var list = ArrayList<Contact>()
+        for (contact in Data.user.contacts){
+            if (contact.isFavortie)
+                list.add(contact)
+        }
+        return list
+    }
 
+    private fun getNonfavorites() : ArrayList<Contact>{
+        var list = ArrayList<Contact>()
+        for (contact in Data.user.contacts){
+            if (!contact.isFavortie)
+                list.add(contact)
+        }
+        return list
+    }
 
     private fun sendUserToNextActivity() {
         var intent = Intent(applicationContext, LoginActivity::class.java)

@@ -96,8 +96,8 @@ class RegisterActivity : AppCompatActivity() {
                     var df1 = fireStore.collection("Contacts")
                     var df2 = fireStore.collection("Contacts")
 
-                    contacts.add(Contact("", fireUser.uid, "papa", "123"))
-                    contacts.add(Contact("", fireUser.uid, "maman", "321"))
+                    contacts.add(Contact("", fireUser.uid, "papa", "123", false))
+                    contacts.add(Contact("", fireUser.uid, "maman", "321", false))
 
                     var userInfo : HashMap<String, Any> = HashMap<String, Any>()
                     userInfo.put("FirstName", firstname)
