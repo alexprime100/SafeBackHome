@@ -7,7 +7,7 @@
     app:cardCornerRadius="4dp"
     android:layout_margin="4dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -17,18 +17,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/contact_name"
+            android:text="name"
             android:padding="2dp"
             android:textSize="20sp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="15dp"
             android:textAlignment="center"
+            />
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/contact_remove_button"
+            android:text="X"
+            android:layout_alignParentRight="true"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/contact_number"
+            android:layout_below="@id/contact_name"
+            android:text="tel"
             android:layout_marginTop="10dp"
             android:textSize="15sp"
             />
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

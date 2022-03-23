@@ -29,7 +29,6 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var fireAuthentication : FirebaseAuth
     private lateinit var firestore : FirebaseFirestore
     private lateinit var loggedUser : User
-    private lateinit var contactList : ArrayList<Contact>
     private lateinit var contactAdapter : ContactAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +41,6 @@ class SettingsActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         //alertMessage.setText("cc")
 
-        contactList = ArrayList<Contact>()
 
         saveButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
@@ -78,6 +76,11 @@ class SettingsActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         initiateRecyclerView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        contactsRecyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun declareViews(){

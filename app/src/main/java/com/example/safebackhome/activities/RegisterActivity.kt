@@ -13,6 +13,7 @@ import com.example.safebackhome.models.Contact
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlin.collections.HashMap
 
 class RegisterActivity : AppCompatActivity() {
@@ -91,8 +92,12 @@ class RegisterActivity : AppCompatActivity() {
                     fireUser = fireAuthentication.currentUser!!
                     var df = fireStore.collection("Users").document(fireUser.uid)
                     var contacts = ArrayList<Contact>()
-                    contacts.add(Contact(fireUser.uid, "papa", "123"))
-                    contacts.add(Contact(fireUser.uid, "maman", "321"))
+                    var maxId : Int = 1
+                    var df1 = fireStore.collection("Contacts")
+                    var df2 = fireStore.collection("Contacts")
+
+                    contacts.add(Contact("", fireUser.uid, "papa", "123"))
+                    contacts.add(Contact("", fireUser.uid, "maman", "321"))
 
                     var userInfo : HashMap<String, Any> = HashMap<String, Any>()
                     userInfo.put("FirstName", firstname)
@@ -104,6 +109,7 @@ class RegisterActivity : AppCompatActivity() {
 
                     contacts.forEach{
                         var df2 = fireStore.collection("Contacts").document()
+                        it.id = df2.id
                         var contactInfo : HashMap<String, Any> = HashMap<String, Any>()
                         contactInfo.put("UserId", fireUser.uid)
                         contactInfo.put("ContactFullName", it.fullName)

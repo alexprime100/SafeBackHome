@@ -121,11 +121,14 @@ class MainActivity : AppCompatActivity() {
                 firestore.collection("Contacts").whereEqualTo("UserId", fireUser.uid).get()
                     .addOnSuccessListener { documents ->
                         for (document in documents){
+
                             Log.d("Contact Debug", "reading document")
-                            if (document.getString("ContactFullName") != null &&
+                            if (document.get("Id") != null &&
+                                document.getString("ContactFullName") != null &&
                                 document.getString("ContactNumber") != null)
                             {
                                 contacts.add(Contact(
+                                    document.getString("Id").toString(),
                                     document.getString("UserId").toString(),
                                     document.getString("ContactFullName").toString(),
                                     document.getString("ContactNumber").toString()))
