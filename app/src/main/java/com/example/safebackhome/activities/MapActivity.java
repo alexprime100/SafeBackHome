@@ -1,9 +1,9 @@
-package com.example.safebackhome.activites;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.safebackhome.activities;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.safebackhome.R;
 

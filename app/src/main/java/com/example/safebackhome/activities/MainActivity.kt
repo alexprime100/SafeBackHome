@@ -138,7 +138,8 @@ class MainActivity : AppCompatActivity() {
                                     document.getString("Id").toString(),
                                     document.getString("UserId").toString(),
                                     document.getString("ContactFullName").toString(),
-                                    document.getString("ContactNumber").toString()))
+                                    document.getString("ContactNumber").toString(),
+                                    document.getBoolean("IsFavorite").toString().toBoolean()))
                             }
                         }
                     }
