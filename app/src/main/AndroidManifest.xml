@@ -16,10 +16,12 @@
         android:theme="@style/Theme.SafeBackHome">
         <activity
             android:name=".activites.AddContactActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activites.LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,13 +30,16 @@
         </activity>
         <activity
             android:name=".activites.RegisterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activites.SettingsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activites.MainActivity"
-            android:exported="false"></activity>
+            android:exported="false"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
