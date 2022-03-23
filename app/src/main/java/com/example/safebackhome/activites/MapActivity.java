@@ -1,0 +1,49 @@
+package com.example.safebackhome.activites;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+
+import com.example.safebackhome.R;
+
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+
+public class MapActivity extends AppCompatActivity {
+
+    private MapView map;
+    IMapController mapController;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        Configuration.getInstance().load(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
+        setContentView(R.layout.activity_map);
+        map = findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.MAPNIK);
+        map.setBuiltInZoomControls(true); //zoomable
+        GeoPoint starPoint = new GeoPoint( 48.390394, -4.486076);
+        mapController = map.getController();
+        mapController.setCenter(starPoint);
+        mapController.setZoom(18.0);
+
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        map.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        map.onResume();
+    }
+}
