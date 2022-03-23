@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var loggedUser : User
     private lateinit var settings: ImageButton
     private lateinit var alertButton: Button
+    private lateinit var trajetButton: Button
     private lateinit var contactsRecyclerView : RecyclerView
     private val MY_PERMISSIONS_REQUEST_SEND_SMS = 0
     private val MY_PERMISSIONS_REQUEST_PHONE_CALL = 1
@@ -57,6 +58,11 @@ class MainActivity : AppCompatActivity() {
                 callPolice()
             }
         })
+        trajetButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View?) {
+                startActivity(Intent(applicationContext, MapActivity::class.java))
+            }
+        })
 
 
     }
@@ -66,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         settings = findViewById(R.id.settings_button)
         alertButton = findViewById(R.id.alert_button)
         callPoliceButton = findViewById(R.id.call_police_button)
+        trajetButton = findViewById(R.id.trajet_button)
     }
 
     override fun onStart() {

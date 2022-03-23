@@ -15,11 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeBackHome">
         <activity
-            android:name=".activities.AddContactActivity"
+            android:name=".activites.AddContactActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".activites.LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -29,15 +29,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name=".activites.RegisterActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name=".activites.SettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activites.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait"></activity>
     </application>
