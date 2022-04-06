@@ -16,8 +16,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safebackhome.Data
 import com.example.safebackhome.R
+import com.example.safebackhome.isPermissionGranted
 import com.example.safebackhome.models.Contact
 import com.example.safebackhome.models.User
+import com.example.safebackhome.requestPermission
+import com.example.safebackhome.service.DetectedActivityService
+import com.example.safebackhome.service.requestActivityTransitionUpdates
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -64,7 +68,14 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-
+        if (isPermissionGranted()) {
+            startService(Intent(this, DetectedActivityService::class.java))
+            requestActivityTransitionUpdates()
+            Toast.makeText(this@MainActivity, "You've started activity tracking",
+                Toast.LENGTH_SHORT).show()
+        } else {
+            requestPermission()
+        }
     }
 
     private fun declareViews(){
