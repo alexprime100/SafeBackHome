@@ -49,6 +49,17 @@
                 tools:layout_editor_absoluteY="188dp" />
 
             <Button
+                android:id="@+id/editFakePin_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:text="Changer faux code PIN"
+                tools:layout_editor_absoluteX="100dp"
+                tools:layout_editor_absoluteY="188dp" />
+
+            <Button
                 android:id="@+id/editAlertMessage_button"
                 android:layout_width="212dp"
                 android:layout_height="wrap_content"

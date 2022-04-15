@@ -165,12 +165,12 @@ class MainActivity : AppCompatActivity() {
                     {
 
                         loggedUser = User(
-                            document.getString("Id").toString(),
+                            fireUser.uid,
                             document.getString("Email").toString(),
                             document.getString("FirstName").toString(),
                             document.getString("LastName").toString(),
-                            document.getString("Pin").toString(),
-                            document.getString("fakePin").toString(),
+                            document.getString("PIN").toString(),
+                            document.getString("FakePin").toString(),
                             contacts)
                         Log.d("User Debug", "nb contacts" + loggedUser.contacts.size)
                         welcomeMessage.text = "Bonjour " + loggedUser.firstName

@@ -51,4 +51,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'org.osmdroid:osmdroid-android:6.1.8'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation "androidx.core:core-ktx:{latest-version}"
 }
