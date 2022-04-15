@@ -33,7 +33,7 @@
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        android:inputType=""
         android:hint="password"
         android:id="@+id/login_editpassword"
         android:layout_marginBottom="25dp" />

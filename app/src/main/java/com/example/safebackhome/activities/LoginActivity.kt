@@ -3,10 +3,12 @@ package com.example.safebackhome.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.safebackhome.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -16,6 +18,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var emailEdit : EditText
     private lateinit var passwordEdit : EditText
     private lateinit var submit : Button
+    private lateinit var reset: Button
     private lateinit var register : Button
     private lateinit var fireAuthentication : FirebaseAuth
     private lateinit var firestore : FirebaseFirestore
@@ -25,10 +28,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        emailEdit = findViewById(R.id.login_email_edit)
-        passwordEdit = findViewById(R.id.login_editpassword)
-        submit = findViewById(R.id.login_submit_button)
-        register = findViewById(R.id.login_register_button)
+        declareViews()
         fireAuthentication = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         //user = authentication.currentUser!!
@@ -44,6 +44,12 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(applicationContext, RegisterActivity::class.java))
             }
         })
+
+        reset.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View) {
+                resetPassword(p0)
+            }
+        })
     }
 
     override fun onStart() {
@@ -52,6 +58,14 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, MainActivity::class.java))
             finish()
         }
+    }
+
+    private fun declareViews(){
+        emailEdit = findViewById(R.id.login_email_edit)
+        passwordEdit = findViewById(R.id.login_editpassword)
+        submit = findViewById(R.id.login_submit_button)
+        register = findViewById(R.id.login_register_button)
+        reset = findViewById(R.id.login_forgottenpassword_button)
     }
 
     private fun login() {
@@ -75,6 +89,31 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun resetPassword(view: View){
+        val resetMail = EditText(view.context)
+        val passwordResetDialog = AlertDialog.Builder(view.context)
+        passwordResetDialog.setTitle("Réinitialiser le mot de passe ?")
+        passwordResetDialog.setMessage("Entrez votre courriel pour réinitialiser votre mot de passe")
+        passwordResetDialog.setView(resetMail)
+
+        passwordResetDialog.setPositiveButton("Oui"){ dialog, which ->
+            var mail = resetMail.text.toString()
+            fireAuthentication.sendPasswordResetEmail(mail).addOnSuccessListener {
+                Toast.makeText(this, "Mot de passe modifié", Toast.LENGTH_SHORT)
+            }
+                .addOnFailureListener { e->
+                    Toast.makeText(this, "Echec du changement de mot de passe", Toast.LENGTH_SHORT)
+                    Log.e("Password Error", e.message.toString(), e)
+                }
+        }
+
+        passwordResetDialog.setNegativeButton("Non"){dialog, which ->
+
+        }
+
+        passwordResetDialog.create().show()
     }
 
     private fun sendUserToNextActivity() {

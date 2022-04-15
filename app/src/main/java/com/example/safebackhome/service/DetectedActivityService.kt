@@ -61,7 +61,7 @@ class DetectedActivityService : Service() {
   }
 
   private fun requestActivityUpdates() {
-    val task = ActivityRecognitionClient(this).requestActivityUpdatutilisateures(ACTIVITY_UPDATES_INTERVAL,
+    val task = ActivityRecognitionClient(this).requestActivityUpdates(ACTIVITY_UPDATES_INTERVAL,
         DetectedActivityReceiver.getPendingIntent(this))
 
     task.run {

@@ -3,10 +3,13 @@ package com.example.safebackhome.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.safebackhome.Data
 import com.example.safebackhome.R
@@ -14,19 +17,20 @@ import com.example.safebackhome.adapters.ContactAdapter
 import com.example.safebackhome.models.Contact
 import com.example.safebackhome.models.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import java.lang.Exception
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var alertMessage: EditText
-    private lateinit var editPassword: EditText
-    private lateinit var editPin: EditText
-    private lateinit var saveButton : Button
+    private lateinit var alertMessage: Button
+    private lateinit var editPassword: Button
+    private lateinit var editPin: Button
     private lateinit var addContact: Button
     private lateinit var logout : Button
     private lateinit var contactsRecyclerView : RecyclerView
     private lateinit var fireAuthentication : FirebaseAuth
+    private lateinit var fireUser : FirebaseUser
     private lateinit var firestore : FirebaseFirestore
     private lateinit var loggedUser : User
     private lateinit var contactAdapter : ContactAdapter
@@ -38,11 +42,12 @@ class SettingsActivity : AppCompatActivity() {
         declareViews()
 
         fireAuthentication = FirebaseAuth.getInstance()
+        fireUser = fireAuthentication.currentUser!!
         firestore = FirebaseFirestore.getInstance()
         //alertMessage.setText("cc")
 
 
-        saveButton.setOnClickListener(object : View.OnClickListener{
+        /*saveButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
                 val newPin = editPin.text.toString()
                 if (!newPin.isEmpty()){
@@ -57,7 +62,7 @@ class SettingsActivity : AppCompatActivity() {
                     }
                 }
             }
-        })
+        })*/
 
         addContact.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
@@ -69,6 +74,12 @@ class SettingsActivity : AppCompatActivity() {
             override fun onClick(p0: View?) {
                 fireAuthentication.signOut()
                 sendUserToNextActivity()
+            }
+        })
+
+        editPassword.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View) {
+                EditPassword(p0)
             }
         })
     }
@@ -84,10 +95,9 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun declareViews(){
-        editPassword = findViewById(R.id.editTextTextPassword)
-        editPin = findViewById(R.id.editTextNumberPassword)
-        alertMessage = findViewById(R.id.editAlertMessage)
-        saveButton = findViewById(R.id.settings_save_button)
+        editPassword = findViewById(R.id.editPassword_button)
+        editPin = findViewById(R.id.editPin_button)
+        alertMessage = findViewById(R.id.editAlertMessage_button)
         logout = findViewById(R.id.logout_button)
         contactsRecyclerView = findViewById(R.id.settings_contactsList)
         addContact = findViewById(R.id.settings_addContact_button)
@@ -121,6 +131,32 @@ class SettingsActivity : AppCompatActivity() {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
+    }
+
+    private fun EditPassword(view: View){
+        var resetPassword : EditText = EditText(view.context)
+        resetPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        val passwordResetDialog = AlertDialog.Builder(view.context)
+        passwordResetDialog.setTitle("Changer de mot de passe ?")
+        passwordResetDialog.setMessage("Entrez un nouveau mot de passe")
+        passwordResetDialog.setView(resetPassword)
+
+        passwordResetDialog.setPositiveButton("Oui"){ dialog, which ->
+            var newPassword = resetPassword.text.toString()
+            fireUser.updatePassword(newPassword).addOnSuccessListener {
+                Toast.makeText(this, "Mot de passe modifié", Toast.LENGTH_SHORT)
+            }
+                .addOnFailureListener { e->
+                    Toast.makeText(this, "Echec du changement de mot de passe", Toast.LENGTH_SHORT)
+                    Log.e("Password Error", e.message.toString(), e)
+                }
+        }
+
+        passwordResetDialog.setNegativeButton("Non"){dialog, which ->
+
+        }
+
+        passwordResetDialog.create().show()
     }
 }
 

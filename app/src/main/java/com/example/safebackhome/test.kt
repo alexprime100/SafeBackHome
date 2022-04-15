@@ -1,25 +1,13 @@
-package com.example.safebackhome;
+package com.example.safebackhome
 
-import android.util.Log;
+import android.text.InputType
+import android.view.View
+import android.widget.EditText
 
-import androidx.annotation.NonNull;
-
-import com.example.safebackhome.models.Contact;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.ktx.Firebase;
-
-public class test {
-
-    public void delete(Contact contact){
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference collection = firestore.collection("Contacts");
-        Query query = collection.whereEqualTo("UserId", contact.getUserId()).whereEqualTo("ContactFullName", contact.getFullName());
-
+class test {
+    fun delete(view: View) {
+        val editText = EditText(view.context)
+        editText.inputType =
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
     }
 }
