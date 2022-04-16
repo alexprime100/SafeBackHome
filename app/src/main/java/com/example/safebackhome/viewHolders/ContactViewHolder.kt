@@ -12,6 +12,7 @@ class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var fullName: TextView
     var phoneNumber: TextView
     var removeButton : Button
+    var favoriteButton : Button
 
     fun bind(contact: Contact) {
         fullName.text = contact.fullName
@@ -22,5 +23,6 @@ class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fullName = itemView.findViewById(R.id.contact_name)
         phoneNumber = itemView.findViewById(R.id.contact_number)
         removeButton = itemView.findViewById(R.id.contact_remove_button)
+        favoriteButton = itemView.findViewById(R.id.contact_favorite_button)
     }
 }

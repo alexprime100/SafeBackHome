@@ -108,12 +108,6 @@ class SettingsActivity : AppCompatActivity() {
 
         alertMessage.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View) {
-                editAlertMessage(p0)
-            }
-        })
-
-        alertMessage.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View) {
                 editAlert(p0)
             }
         })
@@ -140,7 +134,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initiateRecyclerView(){
-        contactAdapter = ContactAdapter(getNonfavorites())
+        contactAdapter = ContactAdapter(getContacts())
         contactsRecyclerView.adapter = contactAdapter
     }
 
@@ -160,6 +154,23 @@ class SettingsActivity : AppCompatActivity() {
                 list.add(contact)
         }
         return list
+    }
+
+    private fun getContacts() : ArrayList<Contact>{
+        var list = ArrayList<Contact>()
+        Data.user.contacts.forEach {
+            if (it.isFavortie)
+                list.add(it)
+        }
+        Data.user.contacts.forEach {
+            if (!it.isFavortie)
+                list.add(it)
+        }
+        return list
+    }
+
+    public fun addFavorite(){
+
     }
 
     private fun sendUserToNextActivity() {
@@ -313,10 +324,6 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         return false
-    }
-
-    private fun editAlertMessage(view: View){
-
     }
 }
 

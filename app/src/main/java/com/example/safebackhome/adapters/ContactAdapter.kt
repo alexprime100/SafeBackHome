@@ -28,10 +28,43 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
                 deleteContact(holder.adapterPosition)
             }
         })
+
+        holder.favoriteButton.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View?) {
+                var contact = contactList.get(holder.adapterPosition)
+                if (contact.isFavortie){
+                    removeFavorite(holder.adapterPosition)
+                }
+                else addFavorite(holder.adapterPosition)
+            }
+        })
     }
 
     override fun getItemCount(): Int {
         return contactList.size
+    }
+
+    fun removeFavorite(position: Int){
+        var contact = contactList[position]
+        contact.isFavortie = false
+        contactList.removeAt(position)
+        contactList.add(contact)
+    }
+
+    fun addFavorite(position: Int){
+        var i = 0
+        var contact = contactList[position]
+        contact.isFavortie = true
+        while (contactList[i].isFavortie)
+            i++
+        contactList.removeAt(position)
+        contactList.add(i, contact)
+        notifyDataSetChanged()
+    }
+
+    fun addContact(contact: Contact){
+        contactList.add(contact)
+        notifyDataSetChanged()
     }
 
     private fun deleteContact(position: Int){
