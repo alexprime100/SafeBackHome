@@ -101,10 +101,10 @@ class LoginActivity : AppCompatActivity() {
         passwordResetDialog.setPositiveButton("Oui"){ dialog, which ->
             var mail = resetMail.text.toString()
             fireAuthentication.sendPasswordResetEmail(mail).addOnSuccessListener {
-                Toast.makeText(this, "Mot de passe modifié", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Mot de passe modifié", Toast.LENGTH_SHORT).show()
             }
                 .addOnFailureListener { e->
-                    Toast.makeText(this, "Echec du changement de mot de passe", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "Echec du changement de mot de passe", Toast.LENGTH_SHORT).show()
                     Log.e("Password Error", e.message.toString(), e)
                 }
         }

@@ -111,6 +111,12 @@ class SettingsActivity : AppCompatActivity() {
                 editAlertMessage(p0)
             }
         })
+
+        alertMessage.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View) {
+                editAlert(p0)
+            }
+        })
     }
 
     override fun onStart() {
@@ -185,17 +191,15 @@ class SettingsActivity : AppCompatActivity() {
         passwordResetDialog.setPositiveButton("Oui"){ dialog, which ->
             var newPassword = resetPassword.text.toString()
             fireUser.updatePassword(newPassword).addOnSuccessListener {
-                Toast.makeText(this, "Mot de passe modifié", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Mot de passe modifié", Toast.LENGTH_SHORT).show()
             }
                 .addOnFailureListener { e->
-                    Toast.makeText(this, "Echec du changement de mot de passe", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "Echec du changement de mot de passe", Toast.LENGTH_SHORT).show()
                     Log.e("Password Error", e.message.toString(), e)
                 }
         }
 
-        passwordResetDialog.setNegativeButton("Non"){dialog, which ->
-
-        }
+        passwordResetDialog.setNegativeButton("Non"){dialog, which -> }
 
         passwordResetDialog.create().show()
     }
@@ -252,12 +256,15 @@ class SettingsActivity : AppCompatActivity() {
                     val userDocRef = firestore.collection("Users").document(Data.user.id)
                     userDocRef.update(field, newPin)
                         .addOnSuccessListener {
+                            if (realpin)
+                                loggedUser.pin = newPin
+                            else loggedUser.fakePin = newPin
                             Log.d("Update User Debug: ", "upadte successful")
-                            Toast.makeText(this, "Pin Modifié", Toast.LENGTH_SHORT)
+                            Toast.makeText(this, "Pin Modifié", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener {
                             e -> Log.e("Update User Error: ", e.message.toString(), e)
-                            Toast.makeText(this, "Echec de la modification du pin", Toast.LENGTH_SHORT)
+                            Toast.makeText(this, "Echec de la modification du pin", Toast.LENGTH_SHORT).show()
                         }
                 }
                 catch (e : Exception){
@@ -267,6 +274,36 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         pinResetDialog.create().show()
+    }
+
+    private fun editAlert(view: View) {
+        var params = ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT)
+        params.setMargins(65,0,45,0)
+
+        var alarmEditText = EditText(view.context)
+        if (loggedUser.alertMessage != null)
+            alarmEditText.setText(loggedUser.alertMessage)
+        alarmEditText.layoutParams = params
+
+        var editAlertMessageDialog = AlertDialog.Builder(view.context)
+        editAlertMessageDialog.setTitle("Changer de message d'alerte")
+        editAlertMessageDialog.setMessage("Entrez votre nouveau message d'alerte")
+        editAlertMessageDialog.setView(alarmEditText)
+
+        editAlertMessageDialog.setPositiveButton("Enregister"){dialog, which ->
+            var newMessage = alarmEditText.text.toString()
+            val userDocRef = firestore.collection("Users").document(Data.user.id)
+            userDocRef.update("AlertMessage", newMessage)
+                .addOnSuccessListener {
+                    loggedUser.alertMessage = newMessage
+                    Log.d("Alert Message Debug", "Alert Message changed")
+                    Toast.makeText(this, "Message d'alerte modifié", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                        e -> Log.e("Update User Error: ", e.message.toString(), e)
+                    Toast.makeText(this, "Echec de la modification du message d'alerte", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     private fun isForbidden(pin : String) : Boolean{

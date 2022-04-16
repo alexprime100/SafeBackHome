@@ -54,7 +54,9 @@ class MainActivity : AppCompatActivity() {
         })
         alertButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
-                sendSMS("test", "+33649550343")
+                loggedUser.contacts.forEach {
+                    sendSMS(loggedUser.alertMessage, it.phoneNumber)
+                }
             }
         })
         callPoliceButton.setOnClickListener(object : View.OnClickListener{
@@ -192,7 +194,7 @@ class MainActivity : AppCompatActivity() {
     private fun sendSMS(message : String, number : String){
         try{
             SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
-            Toast.makeText(this, "sms sent", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "sms sent", Toast.LENGTH_SHORT).show()
         }
         catch (e : Exception){
             Log.e("SMS ERROR", e.message.toString())
