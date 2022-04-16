@@ -105,6 +105,12 @@ class SettingsActivity : AppCompatActivity() {
                 editPin(p0)
             }
         })
+
+        alertMessage.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View) {
+                editAlertMessage(p0)
+            }
+        })
     }
 
     override fun onStart() {
@@ -270,6 +276,10 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         return false
+    }
+
+    private fun editAlertMessage(view: View){
+
     }
 }
 

@@ -17,9 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeBackHome">
         <activity
+            android:name=".activities.Register2"
+            android:exported="false" />
+        <activity
             android:name=".activities.AddContactActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LoginActivity"
             android:exported="true"
@@ -33,21 +36,23 @@
         <activity
             android:name=".activities.RegisterActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SettingsActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.MainActivity"
             android:exported="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.MapActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
         <service android:name=".service.DetectedActivityService" />
-        <receiver android:name=".service.DetectedActivityReceiver"/>
+
+        <receiver android:name=".service.DetectedActivityReceiver" />
     </application>
 
 </manifest>

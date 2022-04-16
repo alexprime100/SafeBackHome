@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
 
         register.setOnClickListener(object : View.OnClickListener{
             override fun onClick(view: View) {
-                startActivity(Intent(applicationContext, RegisterActivity::class.java))
+                startActivity(Intent(applicationContext, Register2::class.java))
             }
         })
 
