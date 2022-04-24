@@ -11,7 +11,10 @@ import android.os.Bundle
 import android.telephony.SmsManager
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -48,6 +51,8 @@ class MainActivity : AppCompatActivity() {
 
         requestPermissions()
         declareViews()
+
+        Log.d("EXITAPP", "mainActivity() has been called")
 
         //Listeners
         settings.setOnClickListener(object : View.OnClickListener{
