@@ -87,13 +87,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             requestPermission()
         }
-        if (ContextCompat.checkSelfPermission(
-                applicationContext, Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            startLocationService()
-        }
+        Log.d("LOCATION_UPDATE", "startLocationService() has been called")
+        requestPermission()
+        startLocationService()
     }
 
     private fun declareViews(){
@@ -141,6 +137,21 @@ class MainActivity : AppCompatActivity() {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.CALL_PHONE)) { }
                 else
                     ActivityCompat.requestPermissions(this, arrayOf(permission.CALL_PHONE), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+            }
+            if (ContextCompat.checkSelfPermission(this, permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_COARSE_LOCATION)) { }
+                else
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_COARSE_LOCATION), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+            }
+            if (ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_FINE_LOCATION)) { }
+                else
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_FINE_LOCATION), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+            }
+            if (ContextCompat.checkSelfPermission(this, permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_BACKGROUND_LOCATION)) { }
+                else
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_BACKGROUND_LOCATION), MY_PERMISSIONS_REQUEST_PHONE_CALL)
             }
         }
         catch (e :Exception){

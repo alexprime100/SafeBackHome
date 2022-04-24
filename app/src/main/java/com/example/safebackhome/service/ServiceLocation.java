@@ -34,6 +34,7 @@ public class ServiceLocation extends Service {
         @Override
         public void onLocationResult(@NonNull LocationResult locationResult) {
             super.onLocationResult(locationResult);
+            Log.d("LOCATION_UPDATE", "ServiceLocation CallBack");
             if (locationResult != null && locationResult.getLastLocation() != null) {
                 double latitude = locationResult.getLastLocation().getLatitude();
                 double longitude = locationResult.getLastLocation().getLongitude();
@@ -49,6 +50,7 @@ public class ServiceLocation extends Service {
     }
 
     private void startLocationService() {
+        Log.d("LOCATION_UPDATE", "ServiceLocation startLocation");
         String channelId = "location_notification_channel";
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Intent resultIntent = new Intent();
@@ -94,6 +96,7 @@ public class ServiceLocation extends Service {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         LocationServices.getFusedLocationProviderClient(this)
@@ -102,6 +105,7 @@ public class ServiceLocation extends Service {
     }
 
     private void stopLocationService(){
+        Log.d("LOCATION_UPDATE", "ServiceLocation stopLocation");
         LocationServices.getFusedLocationProviderClient(this)
                 .removeLocationUpdates(locationCallback);
         stopForeground(true);
@@ -111,6 +115,7 @@ public class ServiceLocation extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("LOCATION_UPDATE", "ServiceLocation onStart");
         if(intent != null){
             String action = intent.getAction();
             if(action != null){
