@@ -108,6 +108,7 @@ public class ServiceLocation extends Service {
         stopSelf();
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(intent != null){

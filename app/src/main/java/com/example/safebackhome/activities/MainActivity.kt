@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("EXITAPP", "mainActivity() has been called")
 
+
         //Listeners
         settings.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {

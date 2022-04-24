@@ -27,4 +27,5 @@ public class MyObserver implements DefaultLifecycleObserver {
     }
 }
 
+
 //myLifecycleOwner.getLifecycle().addObserver(new MyObserver());
