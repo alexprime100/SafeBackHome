@@ -80,9 +80,9 @@ class Register2 : AppCompatActivity() {
                 var email = fragment1.emailText.text.toString()
                 var pass1 = fragment1.passwordText.text.toString()
                 var firstname = fragment2.fnameText.text.toString()
-                var lastname = fragment2.fnameText.text.toString()
-                var pin = fragment2.fnameText.text.toString()
-                var fakePin = fragment2.fnameText.text.toString()
+                var lastname = fragment2.lnameText.text.toString()
+                var pin = fragment2.pinText.text.toString()
+                var fakePin = fragment2.fakePinText.text.toString()
 
                 fireAuthentication.createUserWithEmailAndPassword(email, pass1)
                     .addOnSuccessListener {

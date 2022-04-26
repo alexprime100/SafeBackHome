@@ -16,4 +16,13 @@ class User (var id : String, var email : String, var firstName : String, var las
 
         return userInfo
     }
+
+    public override fun toString(): String {
+        var str = "mail : " + email
+        str += "\nfname : " + firstName
+        str += "\nlname : " + lastName
+        str += "\nPIN : " + pin
+        str += "\nFPIN : " + fakePin
+        return str
+    }
 }

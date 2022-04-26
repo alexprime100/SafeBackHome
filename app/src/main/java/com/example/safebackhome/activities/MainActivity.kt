@@ -264,6 +264,7 @@ class MainActivity : AppCompatActivity() {
                             document.getString("FakePin").toString(),
                             contacts)
                         Log.d("User Debug", "nb contacts" + loggedUser.contacts.size)
+                        var str = loggedUser.toString()
                         welcomeMessage.text = "Bonjour " + loggedUser.firstName
                         Data.user = loggedUser
                     }
