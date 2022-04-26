@@ -275,6 +275,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopLocationService()
+        Log.d("LOCATION_UPDATE", "stopLocationService() has been called")
+    }
+
     companion object {
         private const val REQUEST_CODE_LOCATION_PERMISSION = 1
     }

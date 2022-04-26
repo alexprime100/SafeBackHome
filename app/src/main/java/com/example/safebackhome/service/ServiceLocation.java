@@ -30,14 +30,17 @@ import com.google.android.gms.location.LocationSettingsRequest;
 
 public class ServiceLocation extends Service {
 
+    public static double latitude;
+    public static double longitude;
+
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(@NonNull LocationResult locationResult) {
             super.onLocationResult(locationResult);
             Log.d("LOCATION_UPDATE", "ServiceLocation CallBack");
             if (locationResult != null && locationResult.getLastLocation() != null) {
-                double latitude = locationResult.getLastLocation().getLatitude();
-                double longitude = locationResult.getLastLocation().getLongitude();
+                latitude = locationResult.getLastLocation().getLatitude();
+                longitude = locationResult.getLastLocation().getLongitude();
                 Log.d("LOCATION_UPDATE", latitude + ", " + longitude);
             }
         }

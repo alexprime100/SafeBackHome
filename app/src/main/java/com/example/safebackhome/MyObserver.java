@@ -1,9 +1,7 @@
 package com.example.safebackhome;
 
-
-import android.content.Context;
+import androidx.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
