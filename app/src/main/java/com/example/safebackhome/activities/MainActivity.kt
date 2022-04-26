@@ -230,8 +230,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun callPolice(){
         try{
-            val callIntent : Intent = Uri.parse("tel:+33780037131").let { number ->
-                Intent(Intent.ACTION_CALL, number)
+            val callIntent : Intent = Uri.parse("tel:911").let { number ->
+                Intent(Intent.ACTION_DIAL, number)
             }
             val chooser = Intent.createChooser(callIntent, "Sélectionnez une application")
             startActivity(callIntent);

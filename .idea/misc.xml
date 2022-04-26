@@ -34,6 +34,9 @@
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.33" />
         <entry key="app/src/main/res/layout/contact_item.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_alert.xml" value="0.3703125" />
+        <entry key="app/src/main/res/layout/round_button.xml" value="0.3677536231884058" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2365" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2365" />
       </map>
     </option>
   </component>
