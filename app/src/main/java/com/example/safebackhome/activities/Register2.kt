@@ -87,13 +87,15 @@ class Register2 : AppCompatActivity() {
                 fireAuthentication.createUserWithEmailAndPassword(email, pass1)
                     .addOnSuccessListener {
                         fireUser = fireAuthentication.currentUser!!
-                        var df = fireStore.collection("Users").document(fireUser.uid)
+                        var id = fireUser.uid
+                        var df = fireStore.collection("Users").document(id)
                         var contacts = ArrayList<Contact>()
 
                         contacts.add(Contact("", fireUser.uid, "papa", "123", false))
                         contacts.add(Contact("", fireUser.uid, "maman", "321", false))
 
                         var userInfo: HashMap<String, Any> = HashMap<String, Any>()
+                        userInfo.put("Id", id)
                         userInfo.put("FirstName", firstname)
                         userInfo.put("LastName", lastname)
                         userInfo.put("Email", email)

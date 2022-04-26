@@ -44,25 +44,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var alertButton: Button
     private lateinit var trajetButton: Button
     private lateinit var contactsRecyclerView : RecyclerView
-    /*private lateinit var permissionsLauncher: ActivityResultLauncher<Array<String>>
-    private var sendSMSGranted = false
-    private var callPhoneGranted = false
-    private var accessCoarseGranted = false
-    private var accessFineGranted = false
-    private var accessBackGranted = false
-    private var recognitionGranted = false*/
-    private val MY_PERMISSIONS_REQUEST_SEND_SMS = 0
-    private val MY_PERMISSIONS_REQUEST_PHONE_CALL = 1
-    private val MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 2
-    private val MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 3
-    private val MY_PERMISSIONS_REQUEST_ACCESS_BACKGROUND_LOCATION = 4
-    private val MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 5
     private lateinit var callPoliceButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        fireAuthentication = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+        getUser()
         //requestPermissions()
         /*permissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             sendSMSGranted = permissions[Manifest.permission.SEND_SMS] ?: sendSMSGranted
@@ -132,110 +122,28 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        fireAuthentication = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
-        getUser()
-    }
-
-
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        when (requestCode){
-            MY_PERMISSIONS_REQUEST_SEND_SMS -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(this, "sms permitted", Toast.LENGTH_SHORT).show()
-                else
-                    Toast.makeText(this, "sms fail", Toast.LENGTH_SHORT).show()
-            }
-            MY_PERMISSIONS_REQUEST_PHONE_CALL -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(this, "call permitted", Toast.LENGTH_SHORT).show()
-                else
-                    Toast.makeText(this, "call fail", Toast.LENGTH_SHORT).show()
-            }
-            MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(this, "CL permitted", Toast.LENGTH_SHORT).show()
-                else
-                    Toast.makeText(this, "CL fail", Toast.LENGTH_SHORT).show()
-            }
-            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(this, "FL permitted", Toast.LENGTH_SHORT).show()
-                else
-                    Toast.makeText(this, "FL fail", Toast.LENGTH_SHORT).show()
-            }
-            MY_PERMISSIONS_REQUEST_ACCESS_BACKGROUND_LOCATION -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(this, "BL permitted", Toast.LENGTH_SHORT).show()
-                else
-                    Toast.makeText(this, "BL fail", Toast.LENGTH_SHORT).show()
-            }
-            MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(this, "AR permitted", Toast.LENGTH_SHORT).show()
-                else
-                    Toast.makeText(this, "AR fail", Toast.LENGTH_SHORT).show()
-            }
-
-        }
-    }
-
-    private fun requestPermissions(){
-        try {
-            if (ContextCompat.checkSelfPermission(this, permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.SEND_SMS)) { }
-                else
-                    ActivityCompat.requestPermissions(this, arrayOf(permission.SEND_SMS), MY_PERMISSIONS_REQUEST_SEND_SMS)
-            }
-            if (ContextCompat.checkSelfPermission(this, permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.CALL_PHONE)) { }
-                else
-                    ActivityCompat.requestPermissions(this, arrayOf(permission.CALL_PHONE), MY_PERMISSIONS_REQUEST_PHONE_CALL)
-            }
-            if (ContextCompat.checkSelfPermission(this, permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_COARSE_LOCATION)) { }
-                else
-                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_COARSE_LOCATION), MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION)
-            }
-            if (ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_FINE_LOCATION)) { }
-                else
-                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_FINE_LOCATION), MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
-            }
-            if (ContextCompat.checkSelfPermission(this, permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_BACKGROUND_LOCATION)) { }
-                else
-                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_BACKGROUND_LOCATION), MY_PERMISSIONS_REQUEST_ACCESS_BACKGROUND_LOCATION)
-            }
-            if (ContextCompat.checkSelfPermission(this, permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACTIVITY_RECOGNITION)) { }
-                else
-                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACTIVITY_RECOGNITION), MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION )
-            }
-        }
-        catch (e :Exception){
-            Log.e("PERMISSION ERROR : ", e.message.toString(), e)
-        }
     }
 
     private fun getUser(){
         Log.d("User Debug", "test")
-        val fireUser = fireAuthentication.currentUser
+        val fireUser = fireAuthentication.currentUser!!
+        var userId = fireUser.uid
         if (fireUser != null){
             try{
-                var contacts = ArrayList<Contact>()
-                firestore.collection("Contacts").whereEqualTo("UserId", fireUser.uid).get()
+                /*var contacts = ArrayList<Contact>()
+                firestore.collection("Contacts")/*.whereEqualTo("UserId", userId)*/.get()
                     .addOnSuccessListener { documents ->
-                        for (document in documents){
+                    var size = documents.size()
+                    Toast.makeText(this, size, Toast.LENGTH_SHORT)
+                    for (document in documents){
 
-                            Log.d("Contact Debug", "reading document")
-                            if (document.get("Id") != null &&
-                                document.getString("ContactFullName") != null &&
-                                document.getString("ContactNumber") != null)
-                            {
+                        Log.d("Contact Debug", "reading document")
+                        if (document.get("Id") != null &&
+                            document.getString("ContactFullName") != null &&
+                            document.getString("ContactNumber") != null &&
+                            document.getString("UserId") != null)
+                        {
+                            if (document.getString("UserId").toString().equals(userId)){
                                 contacts.add(Contact(
                                     document.getString("Id").toString(),
                                     document.getString("UserId").toString(),
@@ -245,9 +153,10 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    .addOnFailureListener { e ->
-                        Log.e("Contact Error", e.message.toString(), e)
-                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Contact Error", e.message.toString(), e)
+                }*/
                 var documentReference = firestore.collection("Users").document(fireUser.uid)
                 documentReference.get().addOnSuccessListener{document ->
                     if (document.getString("Email") != null &&
@@ -262,8 +171,8 @@ class MainActivity : AppCompatActivity() {
                             document.getString("LastName").toString(),
                             document.getString("PIN").toString(),
                             document.getString("FakePin").toString(),
-                            contacts)
-                        Log.d("User Debug", "nb contacts" + loggedUser.contacts.size)
+                            /*contacts*/)
+                        //Log.d("User Debug", "nb contacts" + loggedUser.contacts.size)
                         var str = loggedUser.toString()
                         welcomeMessage.text = "Bonjour " + loggedUser.firstName
                         Data.user = loggedUser
