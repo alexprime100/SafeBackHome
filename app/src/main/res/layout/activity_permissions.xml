@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".activities.PermissionsActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Autoriser l'envoi de SMS"
+        android:id="@+id/permissions_sms_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Autoriser à passer des SMS"
+        android:layout_marginTop="20dp"
+        android:id="@+id/permissions_call_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Autoriser la géolocalisation approximative"
+        android:layout_marginTop="20dp"
+        android:id="@+id/permissions_coarse_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Autoriser la géolocalisation précise"
+        android:layout_marginTop="20dp"
+        android:id="@+id/permissions_fine_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Autoriser la géolocalisation en arrière plan"
+        android:layout_marginTop="20dp"
+        android:id="@+id/permissions_back_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Autoriser la reconnaissance"
+        android:layout_marginTop="20dp"
+        android:id="@+id/permissions_recognition_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Continuer"
+        android:layout_marginTop="20dp"
+        android:id="@+id/permissions_continue_button" />
+
+</LinearLayout>

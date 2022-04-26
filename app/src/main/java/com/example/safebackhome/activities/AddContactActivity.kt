@@ -49,7 +49,7 @@ class AddContactActivity : AppCompatActivity() {
                         Data.user.contacts.add(newContact)
                     }
                     catch (e : Exception){
-
+                        Log.e("Contact Error: ", e.message.toString(), e)
                     }
                     var intent = Intent(applicationContext, SettingsActivity::class.java)
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

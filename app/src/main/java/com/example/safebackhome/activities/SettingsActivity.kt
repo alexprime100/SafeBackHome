@@ -55,24 +55,6 @@ class SettingsActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         //alertMessage.setText("cc")
 
-
-        /*saveButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View?) {
-                val newPin = editPin.text.toString()
-                if (!newPin.isEmpty()){
-                    try {
-                        val userDocRef = firestore.collection("Users").document(Data.user.id)
-                        userDocRef.update("PIN", newPin)
-                            .addOnSuccessListener { Log.d("Update User Debug: ", "upadte successful") }
-                            .addOnFailureListener { e -> Log.e("Update User Error: ", e.message.toString(), e) }
-                    }
-                    catch (e :Exception){
-                        Log.e("Update User Error: ", e.message.toString(), e)
-                    }
-                }
-            }
-        })*/
-
         addContact.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
                 startActivity(Intent(applicationContext, AddContactActivity::class.java))
@@ -120,7 +102,13 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        contactsRecyclerView.adapter?.notifyDataSetChanged()
+        try{
+            contactsRecyclerView.adapter?.notifyDataSetChanged()
+        }
+        catch (e : Exception){
+            Log.e("Adapter Error", e.message.toString(), e)
+        }
+
     }
 
     private fun declareViews(){

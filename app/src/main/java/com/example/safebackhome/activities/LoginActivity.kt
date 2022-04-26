@@ -1,7 +1,9 @@
 package com.example.safebackhome.activities
 
+import android.Manifest
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,10 +11,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.safebackhome.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEdit : EditText
@@ -23,10 +27,24 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var fireAuthentication : FirebaseAuth
     private lateinit var firestore : FirebaseFirestore
     private lateinit var user : FirebaseUser
+    private val REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        /*if (Build.VERSION.SDK_INT >= 23) {
+            checkMultiplePermissions();
+        }
+        val list = listOf<String>(
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.ACTIVITY_RECOGNITION,
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+        )*/
+
 
         declareViews()
         fireAuthentication = FirebaseAuth.getInstance()
@@ -59,6 +77,102 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
     }
+
+    private fun checkMultiplePermissions() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            var permissionsNeeded = ArrayList<String>()
+            var permissionsList = ArrayList<String>()
+            if (!addPermission(permissionsList, Manifest.permission.SEND_SMS)) {
+                permissionsNeeded.add("SMS")
+            }
+            if (!addPermission(permissionsList, Manifest.permission.CALL_PHONE)) {
+                permissionsNeeded.add("CALL")
+            }
+            if (!addPermission(permissionsList, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                permissionsNeeded.add("COARSE")
+            }
+            if (!addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                permissionsNeeded.add("FINE")
+            }
+            if (!addPermission(permissionsList, Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+                permissionsNeeded.add("BACK")
+            }
+            if (!addPermission(permissionsList, Manifest.permission.ACTIVITY_RECOGNITION)) {
+                permissionsNeeded.add("RECO")
+            }
+
+            if (permissionsList.size > 0) {
+                requestPermissions(
+                    permissionsList.toTypedArray(),
+                    REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS
+                )
+                return
+            }
+        }
+    }
+
+    private fun addPermission(permissionsList: ArrayList<String>, permission: String): Boolean {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionsList.add(permission)
+
+                // Check for Rationale Option
+                if (!shouldShowRequestPermissionRationale(permission)) return false
+            }
+        }
+        return true
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
+                val perms: MutableMap<String, Int> = HashMap()
+                // Initial
+                perms[Manifest.permission.SEND_SMS] = PackageManager.PERMISSION_GRANTED
+                perms[Manifest.permission.CALL_PHONE] = PackageManager.PERMISSION_GRANTED
+                perms[Manifest.permission.ACCESS_COARSE_LOCATION] = PackageManager.PERMISSION_GRANTED
+                perms[Manifest.permission.ACCESS_FINE_LOCATION] = PackageManager.PERMISSION_GRANTED
+                perms[Manifest.permission.ACCESS_BACKGROUND_LOCATION] = PackageManager.PERMISSION_GRANTED
+                perms[Manifest.permission.ACTIVITY_RECOGNITION] = PackageManager.PERMISSION_GRANTED
+
+                // Fill with results
+                var i = 0
+                while (i < permissions.size) {
+                    perms[permissions[i]] = grantResults[i]
+                    i++
+                }
+                if (perms[Manifest.permission.ACCESS_FINE_LOCATION] == PackageManager.PERMISSION_GRANTED
+                    && perms[Manifest.permission.SEND_SMS] == PackageManager.PERMISSION_GRANTED
+                    && perms[Manifest.permission.CALL_PHONE] == PackageManager.PERMISSION_GRANTED
+                    && perms[Manifest.permission.ACCESS_COARSE_LOCATION] == PackageManager.PERMISSION_GRANTED
+                    && perms[Manifest.permission.ACCESS_BACKGROUND_LOCATION] == PackageManager.PERMISSION_GRANTED
+                    && perms[Manifest.permission.ACTIVITY_RECOGNITION] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    // All Permissions Granted
+                    return
+                } else {
+                    // Permission Denied
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        Toast.makeText(
+                            applicationContext,
+                            """
+                            My App cannot run without Location and Storage Permissions.
+                            Relaunch My App or allow permissions in Applications Settings
+                            """.trimIndent(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        finish()
+                    }
+                }
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
 
     private fun declareViews(){
         emailEdit = findViewById(R.id.login_email_edit)

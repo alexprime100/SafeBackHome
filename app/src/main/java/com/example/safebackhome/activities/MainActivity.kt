@@ -15,6 +15,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -41,15 +44,35 @@ class MainActivity : AppCompatActivity() {
     private lateinit var alertButton: Button
     private lateinit var trajetButton: Button
     private lateinit var contactsRecyclerView : RecyclerView
+    /*private lateinit var permissionsLauncher: ActivityResultLauncher<Array<String>>
+    private var sendSMSGranted = false
+    private var callPhoneGranted = false
+    private var accessCoarseGranted = false
+    private var accessFineGranted = false
+    private var accessBackGranted = false
+    private var recognitionGranted = false*/
     private val MY_PERMISSIONS_REQUEST_SEND_SMS = 0
     private val MY_PERMISSIONS_REQUEST_PHONE_CALL = 1
+    private val MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 2
+    private val MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 3
+    private val MY_PERMISSIONS_REQUEST_ACCESS_BACKGROUND_LOCATION = 4
+    private val MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 5
     private lateinit var callPoliceButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        requestPermissions()
+        //requestPermissions()
+        /*permissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            sendSMSGranted = permissions[Manifest.permission.SEND_SMS] ?: sendSMSGranted
+            callPhoneGranted = permissions[Manifest.permission.SEND_SMS] ?: callPhoneGranted
+            accessCoarseGranted = permissions[Manifest.permission.SEND_SMS] ?: accessCoarseGranted
+            accessFineGranted = permissions[Manifest.permission.SEND_SMS] ?: accessFineGranted
+            accessBackGranted = permissions[Manifest.permission.SEND_SMS] ?: accessBackGranted
+            recognitionGranted = permissions[Manifest.permission.SEND_SMS] ?: recognitionGranted
+        }
+        requestPermission()*/
         declareViews()
 
         Log.d("EXITAPP", "mainActivity() has been called")
@@ -63,8 +86,15 @@ class MainActivity : AppCompatActivity() {
         })
         alertButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
-                loggedUser.contacts.forEach {
-                    sendSMS(loggedUser.alertMessage, it.phoneNumber)
+                try{
+                    if (loggedUser.alertMessage != null){
+                        loggedUser.contacts.forEach {
+                            sendSMS(loggedUser.alertMessage, "+33649550343")
+                        }
+                    }
+                }
+                catch (e : Exception){
+                    logError(e)
                 }
             }
         })
@@ -79,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        if (isPermissionGranted()) {
+        /*if (isPermissionGranted()) {
             startService(Intent(this, DetectedActivityService::class.java))
             requestActivityTransitionUpdates()
             Toast.makeText(this@MainActivity, "You've started activity tracking",
@@ -89,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         }
         Log.d("LOCATION_UPDATE", "startLocationService() has been called")
         requestPermission()
-        startLocationService()
+        startLocationService()*/
     }
 
     private fun declareViews(){
@@ -107,22 +137,49 @@ class MainActivity : AppCompatActivity() {
         getUser()
     }
 
+
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode){
             MY_PERMISSIONS_REQUEST_SEND_SMS -> {
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(this, "thanks for permitting", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "sms permitted", Toast.LENGTH_SHORT).show()
                 else
-                    Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "sms fail", Toast.LENGTH_SHORT).show()
             }
             MY_PERMISSIONS_REQUEST_PHONE_CALL -> {
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(this, "thanks for permitting", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "call permitted", Toast.LENGTH_SHORT).show()
                 else
-                    Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "call fail", Toast.LENGTH_SHORT).show()
             }
+            MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "CL permitted", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this, "CL fail", Toast.LENGTH_SHORT).show()
+            }
+            MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "FL permitted", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this, "FL fail", Toast.LENGTH_SHORT).show()
+            }
+            MY_PERMISSIONS_REQUEST_ACCESS_BACKGROUND_LOCATION -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "BL permitted", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this, "BL fail", Toast.LENGTH_SHORT).show()
+            }
+            MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "AR permitted", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this, "AR fail", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 
@@ -141,17 +198,22 @@ class MainActivity : AppCompatActivity() {
             if (ContextCompat.checkSelfPermission(this, permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_COARSE_LOCATION)) { }
                 else
-                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_COARSE_LOCATION), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_COARSE_LOCATION), MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION)
             }
             if (ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_FINE_LOCATION)) { }
                 else
-                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_FINE_LOCATION), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_FINE_LOCATION), MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
             }
             if (ContextCompat.checkSelfPermission(this, permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_BACKGROUND_LOCATION)) { }
                 else
-                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_BACKGROUND_LOCATION), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_BACKGROUND_LOCATION), MY_PERMISSIONS_REQUEST_ACCESS_BACKGROUND_LOCATION)
+            }
+            if (ContextCompat.checkSelfPermission(this, permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACTIVITY_RECOGNITION)) { }
+                else
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACTIVITY_RECOGNITION), MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION )
             }
         }
         catch (e :Exception){
@@ -230,7 +292,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun callPolice(){
         try{
-            val callIntent : Intent = Uri.parse("tel:+33780037131").let { number ->
+            val callIntent : Intent = Uri.parse("tel:+33649550343").let { number ->
                 Intent(Intent.ACTION_CALL, number)
             }
             val chooser = Intent.createChooser(callIntent, "Sélectionnez une application")
@@ -273,6 +335,10 @@ class MainActivity : AppCompatActivity() {
             startService(intent)
             Toast.makeText(this, "Location service stopped", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun logError(e : Exception){
+        Log.e("ERROR: ", e.message.toString(), e)
     }
 
     companion object {
