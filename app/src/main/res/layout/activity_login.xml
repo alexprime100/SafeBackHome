@@ -42,25 +42,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="submit"
-        android:id="@+id/login_submit_button"
-        android:background="@drawable/button_color"
-        android:textColor="#000000"/>
+        android:id="@+id/login_submit_button" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="forgotten password ?"
         android:textSize="8dp"
-        android:id="@+id/login_forgottenpassword_button"
-        android:background="@drawable/button_color"
-        android:textColor="#000000"/>
+        android:id="@+id/login_forgottenpassword_button"/>
 
     <Button
-        android:id="@+id/login_register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_color"
         android:text="Create Account"
-        android:textColor="#000000" />
+        android:id="@+id/login_register_button"/>
 
 </LinearLayout>

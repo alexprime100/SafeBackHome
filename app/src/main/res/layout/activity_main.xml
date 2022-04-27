@@ -48,8 +48,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/call_police_button"
             android:text="Appeler la police"
-            android:background="@drawable/button_color"
-            android:textColor="#000000"/>
+
             />
 
         <Button
@@ -63,9 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/trajet_button"
-            android:text="Trajet"
-            android:background="@drawable/button_color"
-            android:textColor="#000000"/>
+            android:text="Trajet" />
     </LinearLayout>
 </LinearLayout>
 
