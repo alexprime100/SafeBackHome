@@ -68,9 +68,9 @@ public class ServiceLocation extends Service {
                 channelId
         );
         builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setContentTitle("Location Service");
+        builder.setContentTitle("Service de localisation Activé");
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
-        builder.setContentText("Running");
+        builder.setContentText("Vous pouvez envoyer une alerte à tous moments");
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(false);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
@@ -87,7 +87,7 @@ public class ServiceLocation extends Service {
             }
         }
         LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(20*1000);
+        locationRequest.setInterval(10*1000);
         locationRequest.setFastestInterval(5*1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 

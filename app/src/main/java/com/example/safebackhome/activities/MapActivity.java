@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,31 +21,57 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
 public class MapActivity extends AppCompatActivity {
 
     private MapView map;
     IMapController mapController;
+    private Handler m_timerHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
+        /*
         if(!isLocationServiceRunning()){
             startLocationService();
         }
+         */
 
         try {
             Configuration.getInstance().load(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
             map = findViewById(R.id.map);
             map.setTileSource(TileSourceFactory.MAPNIK);
             map.setBuiltInZoomControls(true); //zoomable
-            GeoPoint starPoint = new GeoPoint(48.390394, -4.486076);
+            GeoPoint startPoint = new GeoPoint(ServiceLocation.latitude, ServiceLocation.longitude);
             mapController = map.getController();
-            mapController.setCenter(starPoint);
-            mapController.setZoom(18.0);
+            mapController.setCenter(startPoint);
+            mapController.setZoom(19.0);
+
+            Marker myPosition = new Marker(map);
+            myPosition.setPosition(startPoint);
+            myPosition.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            myPosition.setTitle("Vous êtes ici");
+            map.getOverlays().add(myPosition);
+
+            m_timerHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (map != null) {
+                        map.getOverlayManager().clear();
+                        GeoPoint newLocation = new GeoPoint(ServiceLocation.latitude, ServiceLocation.longitude);
+                        myPosition.setPosition(newLocation);
+                        map.getOverlays().add(myPosition);
+                        mapController.setCenter(newLocation);
+                        map.onResume();
+                        m_timerHandler.postDelayed(this, 10*1000);
+                        //Log.d("LOCATION_UPDATE", "New geopoint : "+ServiceLocation.latitude + ", " + ServiceLocation.longitude);
+                    }
+                }
+            }, 10*1000);
+
         }
         catch (Exception e){
             Log.e("Map Error", e.getMessage().toString());
