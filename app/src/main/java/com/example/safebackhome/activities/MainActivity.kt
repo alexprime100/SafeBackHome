@@ -1,11 +1,11 @@
 package com.example.safebackhome.activities
 
-import android.Manifest
 import android.Manifest.permission
 import android.app.ActivityManager
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.SmsManager
@@ -15,9 +15,6 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -34,6 +31,7 @@ import com.example.safebackhome.service.requestActivityTransitionUpdates
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var welcomeMessage : TextView
@@ -44,25 +42,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var alertButton: Button
     private lateinit var trajetButton: Button
     private lateinit var contactsRecyclerView : RecyclerView
+    private val MY_PERMISSIONS_REQUEST_SEND_SMS = 0
+    private val MY_PERMISSIONS_REQUEST_PHONE_CALL = 1
     private lateinit var callPoliceButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fireAuthentication = FirebaseAuth.getInstance()
-        firestore = FirebaseFirestore.getInstance()
-        getUser()
-        //requestPermissions()
-        /*permissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            sendSMSGranted = permissions[Manifest.permission.SEND_SMS] ?: sendSMSGranted
-            callPhoneGranted = permissions[Manifest.permission.SEND_SMS] ?: callPhoneGranted
-            accessCoarseGranted = permissions[Manifest.permission.SEND_SMS] ?: accessCoarseGranted
-            accessFineGranted = permissions[Manifest.permission.SEND_SMS] ?: accessFineGranted
-            accessBackGranted = permissions[Manifest.permission.SEND_SMS] ?: accessBackGranted
-            recognitionGranted = permissions[Manifest.permission.SEND_SMS] ?: recognitionGranted
-        }
-        requestPermission()*/
+        requestPermissions()
         declareViews()
 
         Log.d("EXITAPP", "mainActivity() has been called")
@@ -76,15 +64,8 @@ class MainActivity : AppCompatActivity() {
         })
         alertButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
-                try{
-                    if (loggedUser.alertMessage != null){
-                        loggedUser.contacts.forEach {
-                            sendSMS(loggedUser.alertMessage, "+33649550343")
-                        }
-                    }
-                }
-                catch (e : Exception){
-                    Data.logger(e)
+                loggedUser.contacts.forEach {
+                    sendSMS(loggedUser.alertMessage, it.phoneNumber)
                 }
             }
         })
@@ -99,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        /*if (isPermissionGranted()) {
+        if (isPermissionGranted()) {
             startService(Intent(this, DetectedActivityService::class.java))
             requestActivityTransitionUpdates()
             Toast.makeText(this@MainActivity, "You've started activity tracking",
@@ -109,7 +90,6 @@ class MainActivity : AppCompatActivity() {
         }
         Log.d("LOCATION_UPDATE", "startLocationService() has been called")
         requestPermission()
-        startLocationService()*/
     }
 
     private fun declareViews(){
@@ -122,54 +102,79 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        fireAuthentication = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+        getUser()
+        startLocationService()
     }
 
-    private fun getContacts() : ArrayList<Contact>{
-        var contacts = ArrayList<Contact>()
-        val fireUser = fireAuthentication.currentUser!!
-        try{
-            firestore.collection("Contacts").whereEqualTo("UserId", fireUser.uid).get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents){
-                        var id = document.getString("Id").toString()
-                        var name = document.getString("ContactFullName").toString()
-                        var num = document.getString("ContactNumber").toString()
-                        var uid = document.getString("UserId").toString()
-                        var c = Contact(id, uid, name, num, false)
-                        contacts.add(c)
-                        Toast.makeText(this, c.fullName, Toast.LENGTH_SHORT)
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Data.logger(e)
-                }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode){
+            MY_PERMISSIONS_REQUEST_SEND_SMS -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "thanks for permitting", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show()
+            }
+            MY_PERMISSIONS_REQUEST_PHONE_CALL -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "thanks for permitting", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show()
+            }
         }
-        catch (e:Exception){
-            Data.logger(e)
+    }
+
+    private fun requestPermissions(){
+        try {
+            if (ContextCompat.checkSelfPermission(this, permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.SEND_SMS)) { }
+                else
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.SEND_SMS), MY_PERMISSIONS_REQUEST_SEND_SMS)
+            }
+            if (ContextCompat.checkSelfPermission(this, permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.CALL_PHONE)) { }
+                else
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.CALL_PHONE), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+            }
+            if (ContextCompat.checkSelfPermission(this, permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_COARSE_LOCATION)) { }
+                else
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_COARSE_LOCATION), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+            }
+            if (ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_FINE_LOCATION)) { }
+                else
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_FINE_LOCATION), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+            }
+            if (ContextCompat.checkSelfPermission(this, permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.ACCESS_BACKGROUND_LOCATION)) { }
+                else
+                    ActivityCompat.requestPermissions(this, arrayOf(permission.ACCESS_BACKGROUND_LOCATION), MY_PERMISSIONS_REQUEST_PHONE_CALL)
+            }
         }
-        return contacts
+        catch (e :Exception){
+            Log.e("PERMISSION ERROR : ", e.message.toString(), e)
+        }
     }
 
     private fun getUser(){
         Log.d("User Debug", "test")
-        val fireUser = fireAuthentication.currentUser!!
-        var userId = fireUser.uid
+        val fireUser = fireAuthentication.currentUser
         if (fireUser != null){
             try{
-                var contacts = getContacts()
-                /*firestore.collection("Contacts")/*.whereEqualTo("UserId", userId)*/.get()
+                var contacts = ArrayList<Contact>()
+                firestore.collection("Contacts").whereEqualTo("UserId", fireUser.uid).get()
                     .addOnSuccessListener { documents ->
-                    var size = documents.size()
-                    Toast.makeText(this, size, Toast.LENGTH_SHORT)
-                    for (document in documents){
+                        for (document in documents){
 
-                        Log.d("Contact Debug", "reading document")
-                        if (document.get("Id") != null &&
-                            document.getString("ContactFullName") != null &&
-                            document.getString("ContactNumber") != null &&
-                            document.getString("UserId") != null)
-                        {
-                            if (document.getString("UserId").toString().equals(userId)){
+                            Log.d("Contact Debug", "reading document")
+                            if (document.get("Id") != null &&
+                                document.getString("ContactFullName") != null &&
+                                document.getString("ContactNumber") != null)
+                            {
                                 contacts.add(Contact(
                                     document.getString("Id").toString(),
                                     document.getString("UserId").toString(),
@@ -179,13 +184,11 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     }
-                }
-                .addOnFailureListener { e ->
-                    Log.e("Contact Error", e.message.toString(), e)
-                }*/
+                    .addOnFailureListener { e ->
+                        Log.e("Contact Error", e.message.toString(), e)
+                    }
                 var documentReference = firestore.collection("Users").document(fireUser.uid)
-                documentReference.get()
-                    .addOnSuccessListener{document ->
+                documentReference.get().addOnSuccessListener{document ->
                     if (document.getString("Email") != null &&
                         document.getString("FirstName") != null &&
                         document.getString("LastName") != null)
@@ -199,8 +202,7 @@ class MainActivity : AppCompatActivity() {
                             document.getString("PIN").toString(),
                             document.getString("FakePin").toString(),
                             contacts)
-                        //Log.d("User Debug", "nb contacts" + loggedUser.contacts.size)
-                        var str = loggedUser.toString()
+                        Log.d("User Debug", "nb contacts" + loggedUser.contacts.size)
                         welcomeMessage.text = "Bonjour " + loggedUser.firstName
                         Data.user = loggedUser
                     }
@@ -219,8 +221,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun sendSMS(message : String, number : String){
         try{
-            SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
+            //SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
             Toast.makeText(this, "sms sent", Toast.LENGTH_SHORT).show()
+
+            var geo = Geocoder(this)
+            var adresses = geo.getFromLocation(ServiceLocation.latitude,ServiceLocation.longitude,1)
+            Log.d("LOCATION_UPDATE", "Adresse : " + adresses)
         }
         catch (e : Exception){
             Log.e("SMS ERROR", e.message.toString())
@@ -229,7 +235,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun callPolice(){
         try{
-            val callIntent : Intent = Uri.parse("tel:+33649550343").let { number ->
+            val callIntent : Intent = Uri.parse("tel:+33780037131").let { number ->
                 Intent(Intent.ACTION_CALL, number)
             }
             val chooser = Intent.createChooser(callIntent, "Sélectionnez une application")
@@ -272,6 +278,12 @@ class MainActivity : AppCompatActivity() {
             startService(intent)
             Toast.makeText(this, "Location service stopped", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopLocationService()
+        Log.d("LOCATION_UPDATE", "stopLocationService() has been called")
     }
 
     companion object {
