@@ -261,9 +261,10 @@ class MainActivity : AppCompatActivity() {
                             document.getString("PIN").toString(),
                             document.getString("FakePin").toString(),
                             contacts)
-                        if(document.getString("AlertMessage")!=null){
+                        if(document.getString("AlertMessage")!=null)
                             loggedUser.alertMessage = document.getString("AlertMessage").toString()
-                        }
+                        else loggedUser.alertMessage = ""
+
                         //Log.d("User Debug", "nb contacts" + loggedUser.contacts.size)
                         var str = loggedUser.toString()
                         welcomeMessage.text = "Bonjour " + loggedUser.firstName

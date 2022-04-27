@@ -290,32 +290,41 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun editAlert(view: View) {
-        var params = ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT)
-        params.setMargins(65,0,45,0)
+        try{
+            var params = ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT)
+            params.setMargins(65,0,45,0)
 
-        var alarmEditText = EditText(view.context)
-        if (loggedUser.alertMessage != null)
-            alarmEditText.setText(loggedUser.alertMessage)
-        alarmEditText.layoutParams = params
+            var alarmEditText = EditText(view.context)
+            if (loggedUser.alertMessage != null)
+                alarmEditText.setText(loggedUser.alertMessage)
+            alarmEditText.layoutParams = params
 
-        var editAlertMessageDialog = AlertDialog.Builder(view.context)
-        editAlertMessageDialog.setTitle("Changer de message d'alerte")
-        editAlertMessageDialog.setMessage("Entrez votre nouveau message d'alerte")
-        editAlertMessageDialog.setView(alarmEditText)
+            var editAlertMessageDialog = AlertDialog.Builder(view.context)
+            editAlertMessageDialog.setTitle("Changer de message d'alerte")
+            editAlertMessageDialog.setMessage("Entrez votre nouveau message d'alerte")
+            editAlertMessageDialog.setView(alarmEditText)
 
-        editAlertMessageDialog.setPositiveButton("Enregister"){dialog, which ->
-            var newMessage = alarmEditText.text.toString()
-            val userDocRef = firestore.collection("Users").document(Data.user.id)
-            userDocRef.update("AlertMessage", newMessage)
-                .addOnSuccessListener {
-                    loggedUser.alertMessage = newMessage
-                    Log.d("Alert Message Debug", "Alert Message changed")
-                    Toast.makeText(this, "Message d'alerte modifié", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener {
-                        e -> Log.e("Update User Error: ", e.message.toString(), e)
-                    Toast.makeText(this, "Echec de la modification du message d'alerte", Toast.LENGTH_SHORT).show()
-                }
+            editAlertMessageDialog.setPositiveButton("Enregister"){dialog, which ->
+                var newMessage = alarmEditText.text.toString()
+                val userDocRef = firestore.collection("Users").document(Data.user.id)
+                userDocRef.update("AlertMessage", newMessage)
+                    .addOnSuccessListener {
+                        loggedUser.alertMessage = newMessage
+                        Log.d("Alert Message Debug", "Alert Message changed")
+                        Toast.makeText(this, "Message d'alerte modifié", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                            e -> Log.e("Update User Error: ", e.message.toString(), e)
+                        Toast.makeText(this, "Echec de la modification du message d'alerte", Toast.LENGTH_SHORT).show()
+                    }
+            }
+
+            editAlertMessageDialog.setNegativeButton("Non"){dialog, which -> }
+
+            editAlertMessageDialog.create().show()
+        }
+        catch (e:Exception){
+            Data.logger(e)
         }
     }
 
