@@ -14,7 +14,7 @@ import com.example.safebackhome.Data
 import com.example.safebackhome.R
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
-import java.lang.Exception
+import kotlin.Exception
 
 class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView.Adapter<ContactViewHolder>() {
 
@@ -25,10 +25,10 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         holder.bind(contactList[position])
-        /*if (contactList[position].isFavorite )
-            holder.favoriteButton.setImageDrawable(ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.ic_favorite_foreground, null ))
+        if (contactList[position].isFavorite )
+            holder.favoriteButton.setImageResource(R.drawable.ic_favorite_foreground)
         else
-            holder.favoriteButton.setImageDrawable(ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.ic_notfavorite_foreground, null ))*/
+            holder.favoriteButton.setImageResource(R.drawable.ic_notfavorite_foreground)
 
         holder.removeButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
@@ -39,10 +39,21 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
         holder.favoriteButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View) {
                 var contact = contactList.get(holder.adapterPosition)
-                if (contact.isFavorite){
-                    removeFavorite(holder.adapterPosition, p0)
+                try{
+                    if (contact.isFavorite){
+                        removeFavorite(holder.adapterPosition, p0)
+                        //holder.favoriteButton.setImageDrawable(ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.ic_notfavorite_foreground, null ))
+                        //holder.favoriteButton.setImageResource(R.drawable.ic_notfavorite_foreground)
+                    }
+                    else {
+                        addFavorite(holder.adapterPosition, p0)
+                        //holder.favoriteButton.setImageDrawable(ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.ic_favorite_foreground, null ))
+                        //holder.favoriteButton.setImageResource(R.drawable.ic_favorite_foreground)
+                    }
                 }
-                else addFavorite(holder.adapterPosition, p0)
+                catch (e:Exception){
+                    Data.logger(e)
+                }
             }
         })
     }
@@ -54,18 +65,25 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
     fun removeFavorite(position: Int, view: View){
         var contact = contactList[position]
         contact.isFavorite = false
-        contactList.removeAt(position)
-        contactList.add(contact)
+        FirebaseFirestore.getInstance().collection("Contacts").document(contact.id).update("IsFavortie", false).addOnSuccessListener {
+            Log.d("Contact Debug : ", "set to not favorite")
+        }
+            .addOnFailureListener { e->
+                Data.logger(e)
+            }
+        notifyDataSetChanged()
     }
 
     fun addFavorite(position: Int, view: View){
         var i = 0
         var contact = contactList[position]
         contact.isFavorite = true
-        while (contactList[i].isFavorite)
-            i++
-        contactList.removeAt(position)
-        contactList.add(i, contact)
+        FirebaseFirestore.getInstance().collection("Contacts").document(contact.id)
+            .update("IsFavortie", true).addOnSuccessListener {
+                Log.d("Contact Debug : ", "set to favorite")
+            }.addOnFailureListener { e->
+                Data.logger(e)
+            }
         notifyDataSetChanged()
     }
 

@@ -131,13 +131,22 @@ class MainActivity : AppCompatActivity() {
             firestore.collection("Contacts").whereEqualTo("UserId", fireUser.uid).get()
                 .addOnSuccessListener { documents ->
                     for (document in documents){
-                        var id = document.getString("Id").toString()
-                        var name = document.getString("ContactFullName").toString()
-                        var num = document.getString("ContactNumber").toString()
-                        var uid = document.getString("UserId").toString()
-                        var c = Contact(id, uid, name, num, false)
-                        contacts.add(c)
-                        Toast.makeText(this, c.fullName, Toast.LENGTH_SHORT)
+                        try{
+                            var id = document.getString("Id").toString()
+                            var name = document.getString("ContactFullName").toString()
+                            var num = document.getString("ContactNumber").toString()
+                            var uid = document.getString("UserId").toString()
+                            var isF = document.getBoolean("IsFavortie")
+                            var isF2 = false
+                            if (isF != null)
+                                isF2 = isF
+                            var c = Contact(id, uid, name, num, isF2)
+                            contacts.add(c)
+                            Toast.makeText(this, c.fullName, Toast.LENGTH_SHORT)
+                        }
+                        catch (e:Exception ){
+                            Data.logger(e)
+                        }
                     }
                 }
                 .addOnFailureListener { e ->
