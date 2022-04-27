@@ -2,7 +2,9 @@ package com.example.safebackhome.activities
 
 import android.Manifest
 import android.Manifest.permission
+import android.app.ActionBar
 import android.app.ActivityManager
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,12 +13,11 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.SmsManager
+import android.text.InputType
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.view.ViewGroup
+import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var trajetButton: Button
     private lateinit var contactsRecyclerView : RecyclerView
     private lateinit var callPoliceButton: Button
+    private var alertMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,20 +79,10 @@ class MainActivity : AppCompatActivity() {
             }
         })
         alertButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View?) {
-                try{
-                    if (loggedUser.alertMessage != null){
-                        loggedUser.getFavorites().forEach {
-                            sendSMS(loggedUser.alertMessage, it.phoneNumber)
-                        }
-                    }
-                    else{
-                        Log.d("message debug", "message failed")
-                    }
-                }
-                catch (e : Exception){
-                    Data.logger(e)
-                }
+            override fun onClick(p0: View) {
+                if (alertMode)
+                    disactivateAlert(p0)
+                else activateAlert()
             }
         })
         callPoliceButton.setOnClickListener(object : View.OnClickListener{
@@ -129,6 +121,57 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         if(!isLocationServiceRunning){
             startLocationService()
+        }
+    }
+
+    private fun activateAlert(){
+        try{
+            if (loggedUser.alertMessage != null){
+                loggedUser.getFavorites().forEach {
+                    sendSMS(loggedUser.alertMessage, it.phoneNumber)
+                }
+            }
+            else{
+                Log.d("message debug", "message failed")
+            }
+            alertMode = true
+        }
+        catch (e : Exception){
+            Data.logger(e)
+        }
+    }
+
+    private fun disactivateAlert(view: View){
+        var params = ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT)
+        params.width = 250
+        params.setMargins(65,0,45,0)
+
+        var pinText = EditText(view.context)
+        pinText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        pinText.hint = "PIN"
+        pinText.layoutParams = params
+
+        var pinEnterDialog = AlertDialog.Builder(view.context)
+        pinEnterDialog.setTitle("Désactiver le mode alerte")
+        pinEnterDialog.setMessage("Entrez votre code PIN")
+        pinEnterDialog.setView(pinText)
+
+        pinEnterDialog.setPositiveButton("Désactiver") { dialog, which ->
+            var pin = pinText.text.toString()
+            if (pin.isEmpty())
+                pinText.setError("Entrez votre code pin")
+            else if (pin.equals(loggedUser.pin)){
+                alertMode = false
+                Log.d("Alert Debug : ", "alert mode disactivated")
+                Toast.makeText(this, "Mode alerte désactivé", Toast.LENGTH_SHORT)
+            }
+            else if (pin.equals(loggedUser.fakePin)){
+                Log.d("Alert Debug : ", "alert mode secretly not disactivated")
+                Toast.makeText(this, "Mode alerte désactivé", Toast.LENGTH_SHORT)
+            }
+            else{
+                pinText.setError("Votre code PIN est incorrect")
+            }
         }
     }
 
