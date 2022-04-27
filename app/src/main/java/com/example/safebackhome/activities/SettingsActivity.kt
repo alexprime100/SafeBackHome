@@ -105,7 +105,7 @@ class SettingsActivity : AppCompatActivity() {
         initiateRecyclerView()
     }
 
-    /*override fun onResume() {
+    override fun onResume() {
         super.onResume()
         try{
             contactsRecyclerView.adapter?.notifyDataSetChanged()
@@ -114,7 +114,11 @@ class SettingsActivity : AppCompatActivity() {
             Log.e("Adapter Error", e.message.toString(), e)
         }
 
-    }*/
+    }
+
+    private fun changeImageButton(){
+
+    }
 
     private fun declareViews(){
         editPassword = findViewById(R.id.editPassword_button)

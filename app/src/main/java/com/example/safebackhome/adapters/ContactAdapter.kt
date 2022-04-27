@@ -1,5 +1,6 @@
 package com.example.safebackhome.adapters
 
+import android.content.res.Resources
 import android.util.Log
 import com.example.safebackhome.models.Contact
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import com.example.safebackhome.Data
 import com.example.safebackhome.R
 import com.google.android.gms.tasks.Task
@@ -23,6 +25,11 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         holder.bind(contactList[position])
+        /*if (contactList[position].isFavorite )
+            holder.favoriteButton.setImageDrawable(ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.ic_favorite_foreground, null ))
+        else
+            holder.favoriteButton.setImageDrawable(ResourcesCompat.getDrawable(Resources.getSystem(), R.drawable.ic_notfavorite_foreground, null ))*/
+
         holder.removeButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
                 deleteContact(holder.adapterPosition)
@@ -30,12 +37,12 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
         })
 
         holder.favoriteButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View?) {
+            override fun onClick(p0: View) {
                 var contact = contactList.get(holder.adapterPosition)
                 if (contact.isFavorite){
-                    removeFavorite(holder.adapterPosition)
+                    removeFavorite(holder.adapterPosition, p0)
                 }
-                else addFavorite(holder.adapterPosition)
+                else addFavorite(holder.adapterPosition, p0)
             }
         })
     }
@@ -44,14 +51,14 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
         return contactList.size
     }
 
-    fun removeFavorite(position: Int){
+    fun removeFavorite(position: Int, view: View){
         var contact = contactList[position]
         contact.isFavorite = false
         contactList.removeAt(position)
         contactList.add(contact)
     }
 
-    fun addFavorite(position: Int){
+    fun addFavorite(position: Int, view: View){
         var i = 0
         var contact = contactList[position]
         contact.isFavorite = true
