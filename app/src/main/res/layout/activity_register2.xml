@@ -21,14 +21,16 @@
         android:text="S'inscrire"
         android:visibility="invisible"
         android:layout_marginTop="-80dp"
-        android:id="@+id/register_submit_button" />
+        android:id="@+id/register_submit_button"
+        android:background="@drawable/button_color"/>
 
     <Button
         android:id="@+id/fragment_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-100dp"
-        android:text="continuer" />
+        android:text="continuer"
+        android:background="@drawable/button_nextpage_color"/>
 
 
 </LinearLayout>

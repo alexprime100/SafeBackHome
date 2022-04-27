@@ -31,8 +31,9 @@
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="60dp"
+            android:scaleType="centerCrop"
             android:layout_toLeftOf="@id/contact_remove_button"
-            android:src="@mipmap/ic_favorite_foreground" />
+            android:src="@drawable/ic_favorite_foreground" />
 
         <Button
             android:id="@+id/contact_remove_button"

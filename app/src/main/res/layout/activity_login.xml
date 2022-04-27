@@ -26,7 +26,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Password"
+        android:text="Mot de passe"
         android:id="@+id/login_password_textview"
         android:layout_marginBottom="15dp" />
 
@@ -34,27 +34,32 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:hint="password"
+        android:hint="mot de passe"
         android:id="@+id/login_editpassword"
         android:layout_marginBottom="25dp" />
 
     <Button
+        android:id="@+id/login_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="submit"
-        android:id="@+id/login_submit_button" />
+        android:background="@drawable/button_nextpage_color"
+        android:text="Connexion"
+        android:layout_marginBottom="20dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="forgotten password ?"
-        android:textSize="8dp"
-        android:id="@+id/login_forgottenpassword_button"/>
+        android:text="Mot de passe oublié ?"
+        android:textSize="14dp"
+        android:id="@+id/login_forgottenpassword_button"
+        android:background="@drawable/button_nextpage_color"
+        android:layout_marginBottom="20dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Account"
-        android:id="@+id/login_register_button"/>
+        android:text="Créer un compte"
+        android:id="@+id/login_register_button"
+        android:background="@drawable/button_nextpage_color"/>
 
 </LinearLayout>

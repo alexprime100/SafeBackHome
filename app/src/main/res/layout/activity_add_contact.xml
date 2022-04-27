@@ -64,6 +64,7 @@
         android:layout_gravity="center"
         android:paddingTop="15dp"
         android:id="@+id/addContact_add_button"
-        android:text="Ajouter" />
+        android:text="Ajouter"
+        android:background="@drawable/button_nextpage_color"/>
 
 </LinearLayout>

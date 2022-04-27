@@ -48,7 +48,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/call_police_button"
             android:text="Appeler la police"
-
+            android:background="@drawable/button_nextpage_color"
+            android:layout_marginBottom="20dp"
             />
 
         <Button
@@ -56,13 +57,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/alert_button"
             android:text="ALERTE"
-            android:backgroundTint="@color/red_alert_color"/>
+            android:background="@drawable/button_alert_color"
+            android:layout_marginBottom="20dp"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/trajet_button"
-            android:text="Trajet" />
+            android:text="Trajet"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_nextpage_color"/>
     </LinearLayout>
 </LinearLayout>
 

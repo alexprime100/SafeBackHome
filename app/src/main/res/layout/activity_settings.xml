@@ -35,7 +35,8 @@
                 android:ems="10"
                 android:text="Changer mot de passe"
                 tools:layout_editor_absoluteX="100dp"
-                tools:layout_editor_absoluteY="120dp" />
+                tools:layout_editor_absoluteY="120dp"
+                android:background="@drawable/button_nextpage_color"/>
 
             <Button
                 android:id="@+id/editPin_button"
@@ -46,7 +47,8 @@
                 android:ems="10"
                 android:text="Changer code PIN"
                 tools:layout_editor_absoluteX="100dp"
-                tools:layout_editor_absoluteY="188dp" />
+                tools:layout_editor_absoluteY="188dp"
+                android:background="@drawable/button_nextpage_color"/>
 
             <Button
                 android:id="@+id/editFakePin_button"
@@ -57,7 +59,8 @@
                 android:ems="10"
                 android:text="Changer faux code PIN"
                 tools:layout_editor_absoluteX="100dp"
-                tools:layout_editor_absoluteY="188dp" />
+                tools:layout_editor_absoluteY="188dp"
+                android:background="@drawable/button_nextpage_color"/>
 
             <Button
                 android:id="@+id/editAlertMessage_button"
@@ -67,7 +70,8 @@
                 android:layout_marginTop="20dp"
                 android:text="message d'alerte"
                 tools:layout_editor_absoluteX="100dp"
-                tools:layout_editor_absoluteY="188dp" />
+                tools:layout_editor_absoluteY="188dp"
+                android:background="@drawable/button_nextpage_color"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -101,7 +105,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingTop="15dp"
-                android:text="Ajouter un contact" />
+                android:text="Ajouter un contact"
+                android:background="@drawable/button_nextpage_color"/>
 
             <Button
                 android:id="@+id/logout_button"
@@ -110,6 +115,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
                 android:text="Se déconnecter"
+                android:background="@drawable/button_color"
                 />
 
         </LinearLayout>
