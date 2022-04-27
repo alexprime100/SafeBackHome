@@ -128,7 +128,6 @@ class SettingsActivity : AppCompatActivity() {
         logout = findViewById(R.id.logout_button)
         contactsRecyclerView = findViewById(R.id.settings_contactsList)
         addContact = findViewById(R.id.settings_addContact_button)
-        addContact.isActivated = false
     }
 
     private fun initiateRecyclerView(){
