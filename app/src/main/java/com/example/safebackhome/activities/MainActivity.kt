@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 catch (e : Exception){
-                    logError(e)
+                    Data.logger(e)
                 }
             }
         })
@@ -124,14 +124,40 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
     }
 
+    private fun getContacts() : ArrayList<Contact>{
+        var contacts = ArrayList<Contact>()
+        val fireUser = fireAuthentication.currentUser!!
+        try{
+            firestore.collection("Contacts").whereEqualTo("UserId", fireUser.uid).get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents){
+                        var id = document.getString("Id").toString()
+                        var name = document.getString("ContactFullName").toString()
+                        var num = document.getString("ContactNumber").toString()
+                        var uid = document.getString("UserId").toString()
+                        var c = Contact(id, uid, name, num, false)
+                        contacts.add(c)
+                        Toast.makeText(this, c.fullName, Toast.LENGTH_SHORT)
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Data.logger(e)
+                }
+        }
+        catch (e:Exception){
+            Data.logger(e)
+        }
+        return contacts
+    }
+
     private fun getUser(){
         Log.d("User Debug", "test")
         val fireUser = fireAuthentication.currentUser!!
         var userId = fireUser.uid
         if (fireUser != null){
             try{
-                /*var contacts = ArrayList<Contact>()
-                firestore.collection("Contacts")/*.whereEqualTo("UserId", userId)*/.get()
+                var contacts = getContacts()
+                /*firestore.collection("Contacts")/*.whereEqualTo("UserId", userId)*/.get()
                     .addOnSuccessListener { documents ->
                     var size = documents.size()
                     Toast.makeText(this, size, Toast.LENGTH_SHORT)
@@ -158,7 +184,8 @@ class MainActivity : AppCompatActivity() {
                     Log.e("Contact Error", e.message.toString(), e)
                 }*/
                 var documentReference = firestore.collection("Users").document(fireUser.uid)
-                documentReference.get().addOnSuccessListener{document ->
+                documentReference.get()
+                    .addOnSuccessListener{document ->
                     if (document.getString("Email") != null &&
                         document.getString("FirstName") != null &&
                         document.getString("LastName") != null)
@@ -171,7 +198,7 @@ class MainActivity : AppCompatActivity() {
                             document.getString("LastName").toString(),
                             document.getString("PIN").toString(),
                             document.getString("FakePin").toString(),
-                            /*contacts*/)
+                            contacts)
                         //Log.d("User Debug", "nb contacts" + loggedUser.contacts.size)
                         var str = loggedUser.toString()
                         welcomeMessage.text = "Bonjour " + loggedUser.firstName
@@ -245,10 +272,6 @@ class MainActivity : AppCompatActivity() {
             startService(intent)
             Toast.makeText(this, "Location service stopped", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun logError(e : Exception){
-        Log.e("ERROR: ", e.message.toString(), e)
     }
 
     companion object {

@@ -2,6 +2,7 @@ package com.example.safebackhome.viewHolders
 
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.TextView
 import com.example.safebackhome.models.Contact
@@ -12,7 +13,7 @@ class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var fullName: TextView
     var phoneNumber: TextView
     var removeButton : Button
-    var favoriteButton : Button
+    var favoriteButton : ImageButton
 
     fun bind(contact: Contact) {
         fullName.text = contact.fullName

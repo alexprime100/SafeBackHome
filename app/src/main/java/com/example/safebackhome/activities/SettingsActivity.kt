@@ -24,7 +24,7 @@ import com.example.safebackhome.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import java.lang.Exception
+import kotlin.Exception
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -47,52 +47,57 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        declareViews()
+        try {
+            declareViews()
 
-        fireAuthentication = FirebaseAuth.getInstance()
-        fireUser = fireAuthentication.currentUser!!
-        loggedUser = Data.user
-        firestore = FirebaseFirestore.getInstance()
-        //alertMessage.setText("cc")
+            fireAuthentication = FirebaseAuth.getInstance()
+            fireUser = fireAuthentication.currentUser!!
+            loggedUser = Data.user
+            firestore = FirebaseFirestore.getInstance()
+            //alertMessage.setText("cc")
 
-        addContact.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View?) {
-                startActivity(Intent(applicationContext, AddContactActivity::class.java))
-            }
-        })
+            addContact.setOnClickListener(object : View.OnClickListener{
+                override fun onClick(p0: View?) {
+                    startActivity(Intent(applicationContext, AddContactActivity::class.java))
+                }
+            })
 
-        logout.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View?) {
-                fireAuthentication.signOut()
-                sendUserToNextActivity()
-            }
-        })
+            logout.setOnClickListener(object : View.OnClickListener{
+                override fun onClick(p0: View?) {
+                    fireAuthentication.signOut()
+                    sendUserToNextActivity()
+                }
+            })
 
-        editPassword.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View) {
-                editPassword(p0)
-            }
-        })
+            editPassword.setOnClickListener(object : View.OnClickListener{
+                override fun onClick(p0: View) {
+                    editPassword(p0)
+                }
+            })
 
-        editPin.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View) {
-                realpin = true
-                editPin(p0)
-            }
-        })
+            editPin.setOnClickListener(object : View.OnClickListener{
+                override fun onClick(p0: View) {
+                    realpin = true
+                    editPin(p0)
+                }
+            })
 
-        editFakePin.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View) {
-                realpin = false
-                editPin(p0)
-            }
-        })
+            editFakePin.setOnClickListener(object : View.OnClickListener{
+                override fun onClick(p0: View) {
+                    realpin = false
+                    editPin(p0)
+                }
+            })
 
-        alertMessage.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(p0: View) {
-                editAlert(p0)
-            }
-        })
+            alertMessage.setOnClickListener(object : View.OnClickListener{
+                override fun onClick(p0: View) {
+                    editAlert(p0)
+                }
+            })
+        }
+        catch (e:Exception){
+            Data.logger(e)
+        }
     }
 
     override fun onStart() {
@@ -100,7 +105,7 @@ class SettingsActivity : AppCompatActivity() {
         initiateRecyclerView()
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         try{
             contactsRecyclerView.adapter?.notifyDataSetChanged()
@@ -109,7 +114,7 @@ class SettingsActivity : AppCompatActivity() {
             Log.e("Adapter Error", e.message.toString(), e)
         }
 
-    }
+    }*/
 
     private fun declareViews(){
         editPassword = findViewById(R.id.editPassword_button)
@@ -130,7 +135,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun getFavorites() : ArrayList<Contact>{
         var list = ArrayList<Contact>()
         for (contact in Data.user.contacts){
-            if (contact.isFavortie)
+            if (contact.isFavorite)
                 list.add(contact)
         }
         return list
@@ -139,7 +144,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun getNonfavorites() : ArrayList<Contact>{
         var list = ArrayList<Contact>()
         for (contact in Data.user.contacts){
-            if (!contact.isFavortie)
+            if (!contact.isFavorite)
                 list.add(contact)
         }
         return list
@@ -147,13 +152,18 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun getContacts() : ArrayList<Contact>{
         var list = ArrayList<Contact>()
-        Data.user.contacts.forEach {
-            if (it.isFavortie)
-                list.add(it)
+        try {
+            Data.user.contacts.forEach {
+                if (it.isFavorite)
+                    list.add(it)
+            }
+            Data.user.contacts.forEach {
+                if (!it.isFavorite)
+                    list.add(it)
+            }
         }
-        Data.user.contacts.forEach {
-            if (!it.isFavortie)
-                list.add(it)
+        catch (e:Exception){
+            Data.logger(e)
         }
         return list
     }

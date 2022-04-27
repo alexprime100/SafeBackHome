@@ -32,7 +32,7 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
         holder.favoriteButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
                 var contact = contactList.get(holder.adapterPosition)
-                if (contact.isFavortie){
+                if (contact.isFavorite){
                     removeFavorite(holder.adapterPosition)
                 }
                 else addFavorite(holder.adapterPosition)
@@ -46,7 +46,7 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
 
     fun removeFavorite(position: Int){
         var contact = contactList[position]
-        contact.isFavortie = false
+        contact.isFavorite = false
         contactList.removeAt(position)
         contactList.add(contact)
     }
@@ -54,8 +54,8 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
     fun addFavorite(position: Int){
         var i = 0
         var contact = contactList[position]
-        contact.isFavortie = true
-        while (contactList[i].isFavortie)
+        contact.isFavorite = true
+        while (contactList[i].isFavorite)
             i++
         contactList.removeAt(position)
         contactList.add(i, contact)

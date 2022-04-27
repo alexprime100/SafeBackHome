@@ -107,9 +107,11 @@ class Register2 : AppCompatActivity() {
                             var df2 = fireStore.collection("Contacts").document()
                             it.id = df2.id
                             var contactInfo: HashMap<String, Any> = HashMap<String, Any>()
+                            contactInfo.put("Id", df2.id)
                             contactInfo.put("UserId", fireUser.uid)
                             contactInfo.put("ContactFullName", it.fullName)
                             contactInfo.put("ContactNumber", it.phoneNumber)
+                            contactInfo.put("IsFavortie", false)
                             df2.set(contactInfo)
                         }
                         sendUserToNextActivity()
