@@ -127,6 +127,7 @@ class MainActivity : AppCompatActivity() {
     private fun activateAlert(){
         try{
             if (loggedUser.alertMessage != null){
+                startLocationService()
                 loggedUser.getFavorites().forEach {
                     sendSMS(loggedUser.alertMessage, it.phoneNumber)
                 }
@@ -161,6 +162,7 @@ class MainActivity : AppCompatActivity() {
             if (pin.isEmpty())
                 pinText.setError("Entrez votre code pin")
             else if (pin.equals(loggedUser.pin)){
+                stopLocationService()
                 alertMode = false
                 Log.d("Alert Debug : ", "alert mode disactivated")
                 Toast.makeText(this, "Mode alerte désactivé", Toast.LENGTH_SHORT)
