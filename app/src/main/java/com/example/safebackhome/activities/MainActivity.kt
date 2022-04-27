@@ -1,11 +1,11 @@
 package com.example.safebackhome.activities
 
-import android.Manifest
 import android.Manifest.permission
 import android.app.ActivityManager
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.SmsManager
@@ -30,6 +30,7 @@ import com.example.safebackhome.service.ServiceLocation
 import com.example.safebackhome.service.requestActivityTransitionUpdates
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -89,7 +90,6 @@ class MainActivity : AppCompatActivity() {
         }
         Log.d("LOCATION_UPDATE", "startLocationService() has been called")
         requestPermission()
-        startLocationService()
     }
 
     private fun declareViews(){
@@ -105,6 +105,7 @@ class MainActivity : AppCompatActivity() {
         fireAuthentication = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         getUser()
+        startLocationService()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -220,8 +221,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun sendSMS(message : String, number : String){
         try{
-            SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
+            //SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
             Toast.makeText(this, "sms sent", Toast.LENGTH_SHORT).show()
+
+            var geo = Geocoder(this)
+            var adresses = geo.getFromLocation(ServiceLocation.latitude,ServiceLocation.longitude,1)
+            Log.d("LOCATION_UPDATE", "Adresse : " + adresses)
         }
         catch (e : Exception){
             Log.e("SMS ERROR", e.message.toString())
