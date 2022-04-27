@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Autoriser l'envoi de SMS"
         android:id="@+id/permissions_sms_button"
+        android:paddingHorizontal="5dp"
         android:background="@drawable/button_nextpage_color"/>
 
     <Button
@@ -23,6 +24,7 @@
         android:text="Autoriser à passer des SMS"
         android:layout_marginTop="20dp"
         android:id="@+id/permissions_call_button"
+        android:paddingHorizontal="5dp"
         android:background="@drawable/button_nextpage_color"/>
 
     <Button
@@ -30,6 +32,7 @@
         android:layout_height="wrap_content"
         android:text="Autoriser la géolocalisation approximative"
         android:layout_marginTop="20dp"
+        android:paddingHorizontal="5dp"
         android:id="@+id/permissions_coarse_button"
         android:background="@drawable/button_nextpage_color"/>
 
@@ -38,6 +41,7 @@
         android:layout_height="wrap_content"
         android:text="Autoriser la géolocalisation précise"
         android:layout_marginTop="20dp"
+        android:paddingHorizontal="5dp"
         android:id="@+id/permissions_fine_button"
         android:background="@drawable/button_nextpage_color"/>
 
@@ -46,6 +50,7 @@
         android:layout_height="wrap_content"
         android:text="Autoriser la géolocalisation en arrière plan"
         android:layout_marginTop="20dp"
+        android:paddingHorizontal="5dp"
         android:id="@+id/permissions_back_button"
         android:background="@drawable/button_nextpage_color"/>
 
@@ -54,6 +59,7 @@
         android:layout_height="wrap_content"
         android:text="Autoriser la reconnaissance"
         android:layout_marginTop="20dp"
+        android:paddingHorizontal="5dp"
         android:id="@+id/permissions_recognition_button"
         android:background="@drawable/button_nextpage_color"/>
 

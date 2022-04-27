@@ -53,13 +53,15 @@
         android:textSize="14dp"
         android:id="@+id/login_forgottenpassword_button"
         android:background="@drawable/button_nextpage_color"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:paddingHorizontal="5dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Créer un compte"
         android:id="@+id/login_register_button"
-        android:background="@drawable/button_nextpage_color"/>
+        android:background="@drawable/button_nextpage_color"
+        android:paddingHorizontal="5dp"/>
 
 </LinearLayout>

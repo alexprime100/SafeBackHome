@@ -6,6 +6,8 @@ import android.app.ActivityManager
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.SmsManager
@@ -82,6 +84,9 @@ class MainActivity : AppCompatActivity() {
                             sendSMS(loggedUser.alertMessage, "+33649550343")
                         }
                     }
+                    else{
+                        Log.d("message debug", "message failed")
+                    }
                 }
                 catch (e : Exception){
                     Data.logger(e)
@@ -122,6 +127,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        if(!isLocationServiceRunning){
+            startLocationService()
+        }
     }
 
     private fun getContacts() : ArrayList<Contact>{
@@ -208,6 +216,9 @@ class MainActivity : AppCompatActivity() {
                             document.getString("PIN").toString(),
                             document.getString("FakePin").toString(),
                             contacts)
+                        if(document.getString("AlertMessage")!=null){
+                            loggedUser.alertMessage = document.getString("AlertMessage").toString()
+                        }
                         //Log.d("User Debug", "nb contacts" + loggedUser.contacts.size)
                         var str = loggedUser.toString()
                         welcomeMessage.text = "Bonjour " + loggedUser.firstName
@@ -228,8 +239,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun sendSMS(message : String, number : String){
         try{
-            SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
+            var geo = Geocoder(this)
+            var adresses = geo.getFromLocation(ServiceLocation.latitude,ServiceLocation.longitude,1)
+            lateinit var adress:Address
+            lateinit var pos:String
+            if(adresses.size>0){
+                adress = adresses.get(0)
+                pos = adress.getAddressLine(0)
+
+            }
+            else{
+                pos = ""
+            }
+            Log.d("LOCATION_UPDATE", "Adresse : " + pos)
+            SmsManager.getDefault().sendTextMessage(number, null, message+"Localisation : "+pos, null, null)
             Toast.makeText(this, "sms sent", Toast.LENGTH_SHORT).show()
+
+
         }
         catch (e : Exception){
             Log.e("SMS ERROR", e.message.toString())
@@ -280,6 +306,13 @@ class MainActivity : AppCompatActivity() {
             intent.action = Data.ACTION_STOP_LOCATION_SERVICE
             startService(intent)
             Toast.makeText(this, "Location service stopped", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(isLocationServiceRunning){
+            stopLocationService()
         }
     }
 
