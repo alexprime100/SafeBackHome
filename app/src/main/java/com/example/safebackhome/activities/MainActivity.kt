@@ -175,6 +175,8 @@ class MainActivity : AppCompatActivity() {
                 pinText.setError("Votre code PIN est incorrect")
             }
         }
+        pinEnterDialog.setNegativeButton("Annuler") {dialog, which ->}
+        pinEnterDialog.show()
     }
 
     private fun getContacts() : ArrayList<Contact>{

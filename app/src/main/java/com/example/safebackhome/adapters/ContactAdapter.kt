@@ -99,6 +99,14 @@ class ContactAdapter(private val contactList: ArrayList<Contact>) : RecyclerView
             firestore.collection("Contacts").document(contact.id).delete()
 
             contactList.removeAt(position)
+            Data.user.contacts.removeIf { c -> c.id == contact.id }
+            /*firestore.collection("Contacts").document(contact.id).delete()
+                .addOnSuccessListener {
+                    Log.d("Contact debug : ", "contact removed")
+                }
+                .addOnFailureListener { e->
+                    Data.logger(e)
+                }*/
             notifyDataSetChanged()
         }
         catch (e: Exception){
