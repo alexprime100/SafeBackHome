@@ -80,8 +80,8 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(p0: View?) {
                 try{
                     if (loggedUser.alertMessage != null){
-                        loggedUser.contacts.forEach {
-                            sendSMS(loggedUser.alertMessage, "+33649550343")
+                        loggedUser.getFavorites().forEach {
+                            sendSMS(loggedUser.alertMessage, it.phoneNumber)
                         }
                     }
                     else{

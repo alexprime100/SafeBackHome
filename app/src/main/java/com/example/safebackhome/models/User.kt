@@ -25,4 +25,14 @@ class User (var id : String, var email : String, var firstName : String, var las
         str += "\nFPIN : " + fakePin
         return str
     }
+
+    public fun getFavorites() : ArrayList<Contact>{
+        var fav = ArrayList<Contact>()
+        contacts.forEach {
+            if (it.isFavorite)
+                fav.add(it)
+        }
+        return fav
+    }
+
 }
